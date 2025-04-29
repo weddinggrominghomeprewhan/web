@@ -3,6 +3,7 @@
   top: 0;
   bottom: 0;
   width: 100%;
+  pointer-events: none; 
   transform: translate(-50%, 0);
 }
 
@@ -22,8 +23,81 @@
     height: 20px;
     background: url('../image/Untitled-1.png')
       no-repeat;
+    pointer-events: none; 
     background-size: 100%;
     transform-style: preserve-3d;
     backface-visibility: visible;
   }
 }
+
+
+ /* body {
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+  height: 100vh;
+} */
+
+/* .falling-leaves {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+ 
+}
+
+.leaf-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  transform-style: preserve-3d;
+}
+
+.leaf-scene div {
+  background-image: url('Untitled-1.png');
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  background-size: 100%;
+  transform-style: preserve-3d;
+} */
+
+/* Different leaf styles */
+/* .leaf-scene div:nth-child(6n+0) {
+  background-image: url('Untitled-1.png');
+  width: 40px;
+  height: 40px;
+}
+
+.leaf-scene div:nth-child(6n+1) {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20"><path fill="%23e74c3c" d="M10,0 C15,5 15,15 10,20 C5,15 5,5 10,0"/></svg>');
+  width: 30px;
+  height: 30px;
+}
+
+.leaf-scene div:nth-child(6n+2) {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 20 20"><path fill="%232ecc71" d="M10,0 Q5,5 0,10 Q5,15 10,20 Q15,15 20,10 Q15,5 10,0"/></svg>');
+  width: 35px;
+  height: 35px;
+}
+
+.leaf-scene div:nth-child(6n+3) {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20"><path fill="%23f39c12" d="M10,0 L20,10 L10,20 L0,10 Z"/></svg>');
+  width: 25px;
+  height: 25px;
+}
+
+.leaf-scene div:nth-child(6n+4) {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 20 20"><path fill="%239b59b6" d="M10,0 C0,0 0,20 10,20 C20,20 20,0 10,0"/></svg>');
+  width: 50px;
+  height: 50px;
+}
+
+.leaf-scene div:nth-child(6n+5) {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 20 20"><path fill="%231abc9c" d="M10,0 L20,5 L10,10 L0,5 Z"/></svg>');
+  width: 45px;
+  height: 45px;
+} */
