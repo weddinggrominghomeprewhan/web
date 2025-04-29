@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>องค์กรร่วมงาน</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Reset และฟอนต์พื้นฐาน */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        /* สไตล์พื้นหลัง */
+        .organization-section {
+            padding: 100px 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+        
+        /* Overlay สีเพื่อความอ่านง่าย */
+        .organization-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            color: #f8d7a4;
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: #f8d7a4;
+            bottom: -15px;
+            left: 25%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .organization-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .org-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 40px 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* เอฟเฟกต์เมาส์ */
+        .org-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        
+        .org-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .org-card:hover::before {
+            left: 100%;
+        }
+        
+        .org-logo {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            margin-bottom: 25px;
+            border-radius: 50%;
+            border: 3px solid #f8d7a4;
+            padding: 5px;
+            background: white;
+            transition: transform 0.3s ease;
+        }
+        
+        .org-card:hover .org-logo {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        .org-name {
+            font-size: 1.4rem;
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .org-role {
+            color: #f8d7a4;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .organization-section {
+                padding: 70px 0;
+                background-attachment: scroll;
+            }
+            
+            .organization-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .org-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="organization-section">
+        <div class="container">
+            <h2 class="section-title">องค์กรร่วมงาน</h2>
+            
+            <div class="organization-grid">
+                <!-- องค์กรที่ 1 -->
+                <div class="org-card">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="ครอบครัวเจ้าสาว" class="org-logo">
+                    <h3 class="org-name">ครอบครัวเจ้าสาว</h3>
+                    <p class="org-role">ผู้จัดงานฝ่ายเจ้าสาว</p>
+                </div>
+                
+                <!-- องค์กรที่ 2 -->
+                <div class="org-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="ครอบครัวเจ้าบ่าว" class="org-logo">
+                    <h3 class="org-name">ครอบครัวเจ้าบ่าว</h3>
+                    <p class="org-role">ผู้จัดงานฝ่ายเจ้าบ่าว</p>
+                </div>
+                
+                <!-- องค์กรที่ 3 -->
+                <div class="org-card">
+                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="เพื่อนเจ้าสาว" class="org-logo">
+                    <h3 class="org-name">เพื่อนเจ้าสาว</h3>
+                    <p class="org-role">ฝ่ายพิธีการ</p>
+                </div>
+                
+                <!-- องค์กรที่ 4 -->
+                <div class="org-card">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="เพื่อนเจ้าบ่าว" class="org-logo">
+                    <h3 class="org-name">เพื่อนเจ้าบ่าว</h3>
+                    <p class="org-role">ฝ่ายต้อนรับ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
