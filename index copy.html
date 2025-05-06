@@ -12,18 +12,22 @@
     <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
 	<link href="https://fonts.googleapis.com/css?family=Sacramento" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    
     <!-- Css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/font.css">
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/animation.css">
-    <link rel="stylesheet" href="falling.css">
+    <link rel="stylesheet" href="css/falling.css">
     <link rel="stylesheet" href="css/event.css">
-    <!-- <link rel="stylesheet" href="css/layout.css"> -->
-    <link rel="stylesheet" href="css/skeleton.css">
 
     
 
@@ -70,7 +74,7 @@
         </div>
 
             <div class="theme-color wow bounceInRight" data-wow-delay=".3s">
-                <img src="theme-color.png" alt="Couple photo">
+                <img src="./image/theme-color.png" alt="Couple photo">
             </div>
         </div>
     </section> 
@@ -82,9 +86,9 @@
 
            
         </div>
-        <h3 class="kanit-light-italic wow fadeIn " data-wow-delay=".4s">We are pleased to invite you to our wedding ceremony and let’s celebrate together on our special day in…</h3>
+        <h4 class="wow fadeIn " data-wow-delay=".4s">We are pleased to invite you to our wedding ceremony and let’s celebrate together on our special day in…</h4>
         <br/>
-        <h3 class="kanit-light-italic wow fadeIn " data-wow-delay=".5s">ร่วมแสดงความยินดีไปพร้อมกันกับเรา นับถอยหลังในอีก…</h3>
+        <h4 class="kanit-light-italic wow fadeIn " data-wow-delay=".5s">ร่วมแสดงความยินดีไปพร้อมกันกับเรา นับถอยหลังในอีก…</h4>
         <div class="countdown-container">
             <div class="countdown-box">
                 <div class="countdown-value wow pulse" data-wow-iteration="60" id="days">00</div>
@@ -199,43 +203,78 @@
         </div>
     </section> -->
 
-    <section class="section event" id="rsvp">
+    <section class="timeline-section" id="event">
         <div class="container">
-            <div class="section-title  wow fadeIn" data-wow-delay=".3s">
-                <h2>Wedding Event</h2>
+            <div class="section-title">
+                <h2>Wedding Events</h2>
             </div>
-           
-            <div class="eight columns row">	
-                <!-- Wedding Events Photo -->
-                <div class="wedding_events_photo">
-                    <img src="image/gift.jpg" alt="">
-                </div> 
-                
-                <h2 class="wedding_events_title">Wedding Ceremony</h2>				
-                <!-- Wedding Events Info -->         
-                <div class="wedding_events_info">
-                    <h3>23 September 2017 @ 9:00 PM</h3>
-                    <h3>Address: Some Street, Some City</h3> 
-                </div>			
-            </div>   
-            
-            <div class="eight columns row">
-                <!-- Wedding events Photo -->
-                <div class="wedding_events_photo">
-                    <img src="images/wedding_events_img_2.jpg" alt="">
-                </div>  
-                
-                <h2 class="wedding_events_title">Wedding Party</h2>			
-                <!-- Wedding Events Info -->         
-                <div class="wedding_events_info">
-                    <h3>23 September 2017 @ 17:00 PM</h3>
-                    <h3>Address: Some Street, Some City</h3>  
+            <div class="timeline">
+                <!-- รายการที่ 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-icon">
+                            <img src="./image/ring.jpg" alt="แหวน" class="timeline-logo">                
+                        </div>
+                        <div class="timeline-time">15.00 น.</div>
+                        <h3 class="timeline-title">พิธีสวมแหวน</h3>
+                        <p class="timeline-desc">พิธีสำคัญในการสวมแหวนหมั้นและแสดงความรัก</p>
+                    </div>
                 </div>
-                           
-            </div>  
+                
+                <!-- รายการที่ 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-icon">
+                            <img src="./image/gift.jpg" alt="ครอบครัวเจ้าสาว" class="timeline-logo">                
+                        </div>
+                        <div class="timeline-time">16.00 น.</div>
+                        <h3 class="timeline-title">พิธีไหว้ผู้ใหญ่</h3>
+                        <p class="timeline-desc">แสดงความเคารพและรับพรจากผู้ใหญ่ทั้งสองฝ่าย</p>
+                    </div>
+                </div>
+                
+                <!-- รายการที่ 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-icon">
+                            <img src="./image/photo.jpg" alt="ครอบครัวเจ้าสาว" class="timeline-logo">                
+                        </div>
+                        <div class="timeline-time">17.00 น.</div>
+                        <h3 class="timeline-title">ร่วมถ่ายรูป</h3>
+                        <p class="timeline-desc">ช่วงเวลาเก็บภาพความประทับใจกับแขกผู้มีเกียรติ</p>
+                    </div>
+                </div>
+                
+                <!-- รายการที่ 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-icon">
+                            <img src="./image/wedding.jpg" alt="ครอบครัวเจ้าสาว" class="timeline-logo">                
+                        </div>
+                        <div class="timeline-time">18.00 น.</div>
+                        <h3 class="timeline-title">ฉลองมงคลสมรส</h3>
+                        <p class="timeline-desc">ร่วมรับประทานอาหารและแสดงความยินดี</p>
+                    </div>
+                </div>
+                
+                <!-- รายการที่ 5 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-icon">
+                            <img src="./image/party.jpg" alt="ครอบครัวเจ้าสาว" class="timeline-logo">                
+                        </div>
+                        <div class="timeline-time">20.00 น.</div>
+                        <h3 class="timeline-title">ปาร์ตี้</h3>
+                        <p class="timeline-desc">สนุกสนานกับดนตรีและเครื่องดื่มในบรรยากาศสบายๆ</p>
+                    </div>
+                </div>
+            </div>
             
         </div>
+       
     </section>
+
+    
     <!-- RSVP Section -->
     <section class="section rsvp" id="rsvp">
         <div class="section-title  wow fadeIn" data-wow-delay=".3s">
@@ -266,6 +305,7 @@
 
     <script src="js/falling.js"></script>
     <script src="js/wow.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <script>
         new WOW().init();
     </script>
@@ -337,6 +377,23 @@
                 }
             });
         });
+    </script>
+    <script>
+        // เพิ่มเอฟเฟกต์เมื่อ scroll มาถึง
+        document.addEventListener('DOMContentLoaded', function() {
+    const items = document.querySelectorAll('.timeline-item');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // ถ้าต้องการให้แสดงครั้งเดียว
+            }
+        });
+    }, { threshold: 0.1 });
+
+    items.forEach(item => observer.observe(item));
+});
     </script>
 </body>
 </html>
