@@ -11,6 +11,8 @@
            --dark: #3a2e2e;
            /* Dark brown */
            --white: #ffffff;
+
+           --brown: #916e57;
        }
 
 
@@ -116,7 +118,7 @@
 
        /* Hero Section */
        .hero {
-           height: 120vh;
+           height: 100vh;
            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
                url('../image/slide.png');
            background-size: cover;
@@ -170,21 +172,26 @@
        }
 
        /* Button Styles */
+       .hero a{
+        font-family: 'Kanit', sans-serif;
+        
+
+       }
        .btn {
            display: inline-block;
            padding: 12px 30px;
-           background-color: var(--accent);
+           background-color: var(--brown);
            color: var(--white);
            text-decoration: none;
            border-radius: 30px;
            font-weight: 500;
            transition: all 0.3s ease;
-           border: 2px solid var(--accent);
+           border: 2px solid var(--brown);
        }
 
        .btn:hover {
            background-color: transparent;
-           color: var(--accent);
+           color: var(--brown);
        }
 
        .btn-outline {
@@ -319,7 +326,7 @@
        /* Countdown Section */
        .countdown {
            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-               url('../image/photo-background.avif');
+               url('../image/ring-background.jpg');
            background-size: cover;
            background-position: center;
            background-attachment: fixed;
@@ -385,7 +392,7 @@
            -webkit-border-radius: 1000px;
            -moz-border-radius: 1000px;
            border-radius: 1000px;
-           background: rgba(242, 121, 143, .2);
+           background: var(--brown);
            padding: 15px;
            margin-bottom: 30px;
        }
