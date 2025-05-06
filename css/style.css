@@ -12,6 +12,8 @@
            /* Dark brown */
            --white: #ffffff;
 
+           --btn: #794a2e;
+
            --brown: #916e57;
        }
 
@@ -180,18 +182,18 @@
        .btn {
            display: inline-block;
            padding: 12px 30px;
-           background-color: var(--brown);
+           background-color: var(--btn);
            color: var(--white);
            text-decoration: none;
            border-radius: 30px;
            font-weight: 500;
            transition: all 0.3s ease;
-           border: 2px solid var(--brown);
+           border: 2px solid var(--btn);
        }
 
        .btn:hover {
            background-color: transparent;
-           color: var(--brown);
+           color: var(--btn);
        }
 
        .btn-outline {
@@ -218,7 +220,7 @@
        .section-title h2 {
 
            font-size: 3rem;
-           color: var(--secondary);
+           color: var(--dark);
            position: relative;
            display: inline-block;
        }
@@ -231,7 +233,7 @@
            transform: translateX(-50%);
            width: 80px;
            height: 2px;
-           background-color: var(--accent);
+           background-color: var(--btn);
        }
 
        .about-content {
@@ -333,7 +335,19 @@
            color: var(--white);
            text-align: center;
            padding: 100px 0;
+           position: relative;
        }
+
+       /* .countdown::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+    } */
 
        .countdown-container {
            display: flex;
@@ -393,7 +407,7 @@
            -moz-border-radius: 1000px;
            border-radius: 1000px;
            background: var(--brown);
-           padding: 15px;
+           padding: 8px;
            margin-bottom: 30px;
        }
 
@@ -434,6 +448,157 @@
            line-height: 24px;
            color: #704f55;
        }
+
+       /* สไตล์พื้นหลัง */
+       .hotel-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('../image/party.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: var(--white);
+        text-align: center;
+        padding: 100px 0;
+        position: relative;
+    }
+    
+    /* Overlay สีเพื่อความอ่านง่าย */
+    .hotel-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* .section-title {
+        font-size: 2.8rem;
+        color: #f8d7a4;
+        margin-bottom: 60px;
+        position: relative;
+        display: inline-block;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        background: #f8d7a4;
+        bottom: -15px;
+        left: 25%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    } */
+    
+    .hotel-grid {
+        font-family: 'kanit';
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin-top: 50px;
+    }
+    
+    .org-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 40px 25px;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.4s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        height: 390px;
+    }
+    
+    /* เอฟเฟกต์เมาส์ */
+    .org-card:hover {
+        transform: translateY(-10px) scale(1.03);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    
+    .org-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: 0.5s;
+    }
+    
+    .org-card:hover::before {
+        left: 100%;
+    }
+
+    .no-underline {
+        text-decoration: none;
+    }
+    
+    .org-logo {
+        width: 140px;
+        height: 140px;
+        object-fit: cover;
+        margin-bottom: 25px;
+        border-radius: 50%;
+        border: 3px solid #f8d7a4;
+        padding: 5px;
+        background: white;
+        transition: transform 0.3s ease;
+    }
+    
+    .org-card:hover .org-logo {
+        transform: rotate(10deg) scale(1.1);
+    }
+    
+    .org-name {
+        font-size: 1.4rem;
+        color: white;
+        margin-bottom: 15px;
+        font-weight: 500;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    .org-role {
+        color: #f8d7a4;
+        font-style: italic;
+        font-size: 1.1rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hotel-section {
+            padding: 70px 0;
+            background-attachment: scroll;
+        }
+        
+        .hotel-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+        }
+        
+        .org-card {
+            padding: 30px 20px;
+        }
+    }
 
 
        /* สไตล์ส่วน Timeline */
@@ -723,7 +888,7 @@
        /* RSVP Section */
 
        .rsvp {
-           background-color: var(--light);
+          /*  background-color: var(--light); */
            text-align: center;
        }
 

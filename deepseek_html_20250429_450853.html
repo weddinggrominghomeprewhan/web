@@ -19,8 +19,8 @@
             color: #555;
         }
         
-        /* สไตล์ส่วน Timeline */
-        .timeline-section {
+        /* สไตล์ส่วน hotel */
+        .hotel-section {
             padding: 80px 0;
             position: relative;
         }
@@ -51,14 +51,14 @@
             transform: translateX(-50%);
         }
         
-        /* สไตล์ Timeline */
-        .timeline {
+        /* สไตล์ hotel */
+        .hotel {
             position: relative;
             padding: 40px 0;
         }
         
-        /* เส้นแนวตั้งของ Timeline */
-        .timeline::before {
+        /* เส้นแนวตั้งของ hotel */
+        .hotel::before {
             content: '';
             position: absolute;
             width: 3px;
@@ -69,7 +69,7 @@
             transform: translateX(-50%);
         }
         
-        .timeline-item {
+        .hotel-item {
             padding: 20px 40px;
             position: relative;
             width: 50%;
@@ -79,26 +79,26 @@
             transition: all 0.5s ease;
         }
         
-        .timeline-item.visible {
+        .hotel-item.visible {
             opacity: 1;
             transform: translateY(0);
         }
         
         /* สลับด้านซ้ายขวา */
-        .timeline-item:nth-child(odd) {
+        .hotel-item:nth-child(odd) {
             left: 0;
             text-align: right;
             padding-right: 80px;
         }
         
-        .timeline-item:nth-child(even) {
+        .hotel-item:nth-child(even) {
             left: 50%;
             text-align: left;
             padding-left: 80px;
         }
         
-        /* จุดบน Timeline */
-        .timeline-item::after {
+        /* จุดบน hotel */
+        .hotel-item::after {
             content: '';
             position: absolute;
             width: 20px;
@@ -109,16 +109,16 @@
             top: 30px;
         }
         
-        .timeline-item:nth-child(odd)::after {
+        .hotel-item:nth-child(odd)::after {
             right: -10px;
         }
         
-        .timeline-item:nth-child(even)::after {
+        .hotel-item:nth-child(even)::after {
             left: -10px;
         }
         
         /* การ์ดเนื้อหา */
-        .timeline-content {
+        .hotel-content {
             padding: 30px;
             background: #fff;
             border-radius: 10px;
@@ -128,13 +128,13 @@
             overflow: hidden;
         }
         
-        .timeline-item:hover .timeline-content {
+        .hotel-item:hover .hotel-content {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         
         /* เอฟเฟกต์เมื่อ hover */
-        .timeline-content::before {
+        .hotel-content::before {
             content: '';
             position: absolute;
             top: 0;
@@ -145,105 +145,105 @@
             transition: all 0.3s ease;
         }
         
-        .timeline-item:hover .timeline-content::before {
+        .hotel-item:hover .hotel-content::before {
             width: 5px;
             background: #c19a6b;
         }
         
-        .timeline-time {
+        .hotel-time {
             font-size: 1.2rem;
             color: #d4a977;
             font-weight: 500;
             margin-bottom: 10px;
         }
         
-        .timeline-title {
+        .hotel-title {
             font-size: 1.5rem;
             color: #333;
             margin-bottom: 15px;
         }
         
-        .timeline-desc {
+        .hotel-desc {
             color: #666;
             line-height: 1.6;
         }
         
         /* Responsive Design */
         @media (max-width: 768px) {
-            .timeline::before {
+            .hotel::before {
                 left: 40px;
             }
             
-            .timeline-item {
+            .hotel-item {
                 width: 100%;
                 padding-left: 80px;
                 padding-right: 20px;
                 text-align: left;
             }
             
-            .timeline-item:nth-child(odd),
-            .timeline-item:nth-child(even) {
+            .hotel-item:nth-child(odd),
+            .hotel-item:nth-child(even) {
                 left: 0;
                 text-align: left;
                 padding-left: 80px;
                 padding-right: 20px;
             }
             
-            .timeline-item:nth-child(odd)::after,
-            .timeline-item:nth-child(even)::after {
+            .hotel-item:nth-child(odd)::after,
+            .hotel-item:nth-child(even)::after {
                 left: 30px;
             }
         }
     </style>
 </head>
 <body>
-    <section class="timeline-section">
+    <section class="hotel-section">
         <div class="container">
             <h2 class="section-title">กำหนดการงานแต่งงาน</h2>
             
-            <div class="timeline">
+            <div class="hotel">
                 <!-- รายการที่ 1 -->
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-time">15.00 น.</div>
-                        <h3 class="timeline-title">พิธีสวมแหวน</h3>
-                        <p class="timeline-desc">พิธีสำคัญในการสวมแหวนหมั้นและแสดงความรัก</p>
+                <div class="hotel-item">
+                    <div class="hotel-content">
+                        <div class="hotel-time">15.00 น.</div>
+                        <h3 class="hotel-title">พิธีสวมแหวน</h3>
+                        <p class="hotel-desc">พิธีสำคัญในการสวมแหวนหมั้นและแสดงความรัก</p>
                     </div>
                 </div>
                 
                 <!-- รายการที่ 2 -->
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-time">16.00 น.</div>
-                        <h3 class="timeline-title">พิธีไหว้ผู้ใหญ่</h3>
-                        <p class="timeline-desc">แสดงความเคารพและรับพรจากผู้ใหญ่ทั้งสองฝ่าย</p>
+                <div class="hotel-item">
+                    <div class="hotel-content">
+                        <div class="hotel-time">16.00 น.</div>
+                        <h3 class="hotel-title">พิธีไหว้ผู้ใหญ่</h3>
+                        <p class="hotel-desc">แสดงความเคารพและรับพรจากผู้ใหญ่ทั้งสองฝ่าย</p>
                     </div>
                 </div>
                 
                 <!-- รายการที่ 3 -->
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-time">17.00 น.</div>
-                        <h3 class="timeline-title">ร่วมถ่ายรูป</h3>
-                        <p class="timeline-desc">ช่วงเวลาเก็บภาพความประทับใจกับแขกผู้มีเกียรติ</p>
+                <div class="hotel-item">
+                    <div class="hotel-content">
+                        <div class="hotel-time">17.00 น.</div>
+                        <h3 class="hotel-title">ร่วมถ่ายรูป</h3>
+                        <p class="hotel-desc">ช่วงเวลาเก็บภาพความประทับใจกับแขกผู้มีเกียรติ</p>
                     </div>
                 </div>
                 
                 <!-- รายการที่ 4 -->
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-time">18.00 น.</div>
-                        <h3 class="timeline-title">ฉลองมงคลสมรส</h3>
-                        <p class="timeline-desc">ร่วมรับประทานอาหารและแสดงความยินดี</p>
+                <div class="hotel-item">
+                    <div class="hotel-content">
+                        <div class="hotel-time">18.00 น.</div>
+                        <h3 class="hotel-title">ฉลองมงคลสมรส</h3>
+                        <p class="hotel-desc">ร่วมรับประทานอาหารและแสดงความยินดี</p>
                     </div>
                 </div>
                 
                 <!-- รายการที่ 5 -->
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-time">20.00 น.</div>
-                        <h3 class="timeline-title">ปาร์ตี้</h3>
-                        <p class="timeline-desc">สนุกสนานกับดนตรีและเครื่องดื่มในบรรยากาศสบายๆ</p>
+                <div class="hotel-item">
+                    <div class="hotel-content">
+                        <div class="hotel-time">20.00 น.</div>
+                        <h3 class="hotel-title">ปาร์ตี้</h3>
+                        <p class="hotel-desc">สนุกสนานกับดนตรีและเครื่องดื่มในบรรยากาศสบายๆ</p>
                     </div>
                 </div>
             </div>
@@ -253,10 +253,10 @@
     <script>
         // เพิ่มเอฟเฟกต์เมื่อ scroll มาถึง
         document.addEventListener('DOMContentLoaded', function() {
-            const timelineItems = document.querySelectorAll('.timeline-item');
+            const hotelItems = document.querySelectorAll('.hotel-item');
             
             function checkVisibility() {
-                timelineItems.forEach(item => {
+                hotelItems.forEach(item => {
                     const itemTop = item.getBoundingClientRect().top;
                     const windowHeight = window.innerHeight;
                     
