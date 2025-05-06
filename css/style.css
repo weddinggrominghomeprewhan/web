@@ -989,6 +989,10 @@
                padding: 15px 20px;
            }
 
+           .hero{
+            height: 100vh;
+           }
+
            .nav-links {
                position: fixed;
                top: 0;
