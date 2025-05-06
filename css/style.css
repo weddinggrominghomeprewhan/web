@@ -989,8 +989,8 @@
                padding: 15px 20px;
            }
 
-           .hero{
-            height: 100vh;
+           .hero {
+               height: 100vh;
            }
 
            .nav-links {
@@ -1050,8 +1050,16 @@
                font-size: 2rem;
            }
 
+           .hotel {
+               background-attachment: scroll;
+           }
+
            .rsvp {
                height: 1900px;
+           }
+
+           .location {
+               background-attachment: scroll;
            }
 
            .timeline::before {
