@@ -1,232 +1,141 @@
-;(function () {
-	
-	'use strict';
 
-	var mobileMenuOutsideClick = function() {
+// Mobile Menu Toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
 
-		$(document).click(function (e) {
-	    var container = $("#fh5co-offcanvas, .js-fh5co-nav-toggle");
-	    if (!container.is(e.target) && container.has(e.target).length === 0) {
+menuToggle.addEventListener('click', () => {
+	navLinks.classList.toggle('active');
+});
 
-	    	if ( $('body').hasClass('offcanvas') ) {
-
-    			$('body').removeClass('offcanvas');
-    			$('.js-fh5co-nav-toggle').removeClass('active');
-	    	}
-	    }
-		});
-
-	};
-
-
-	var offcanvasMenu = function() {
-
-		$('#page').prepend('<div id="fh5co-offcanvas" />');
-		$('#page').prepend('<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle fh5co-nav-white"><i></i></a>');
-		var clone1 = $('.menu-1 > ul').clone();
-		$('#fh5co-offcanvas').append(clone1);
-		var clone2 = $('.menu-2 > ul').clone();
-		$('#fh5co-offcanvas').append(clone2);
-
-		$('#fh5co-offcanvas .has-dropdown').addClass('offcanvas-has-dropdown');
-		$('#fh5co-offcanvas')
-			.find('li')
-			.removeClass('has-dropdown');
-
-		// Hover dropdown menu on mobile
-		$('.offcanvas-has-dropdown').mouseenter(function(){
-			var $this = $(this);
-
-			$this
-				.addClass('active')
-				.find('ul')
-				.slideDown(500, 'easeOutExpo');				
-		}).mouseleave(function(){
-
-			var $this = $(this);
-			$this
-				.removeClass('active')
-				.find('ul')
-				.slideUp(500, 'easeOutExpo');				
-		});
-
-
-		$(window).resize(function(){
-
-			if ( $('body').hasClass('offcanvas') ) {
-
-    			$('body').removeClass('offcanvas');
-    			$('.js-fh5co-nav-toggle').removeClass('active');
-				
-	    	}
-		});
-	};
-
-
-	var burgerMenu = function() {
-
-		$('body').on('click', '.js-fh5co-nav-toggle', function(event){
-			var $this = $(this);
-
-
-			if ( $('body').hasClass('overflow offcanvas') ) {
-				$('body').removeClass('overflow offcanvas');
-			} else {
-				$('body').addClass('overflow offcanvas');
-			}
-			$this.toggleClass('active');
-			event.preventDefault();
-
-		});
-	};
-
-
-
-	var contentWayPoint = function() {
-		var i = 0;
-		$('.animate-box').waypoint( function( direction ) {
-
-			if( direction === 'down' && !$(this.element).hasClass('animated-fast') ) {
-				
-				i++;
-
-				$(this.element).addClass('item-animate');
-				setTimeout(function(){
-
-					$('body .animate-box.item-animate').each(function(k){
-						var el = $(this);
-						setTimeout( function () {
-							var effect = el.data('animate-effect');
-							if ( effect === 'fadeIn') {
-								el.addClass('fadeIn animated-fast');
-							} else if ( effect === 'fadeInLeft') {
-								el.addClass('fadeInLeft animated-fast');
-							} else if ( effect === 'fadeInRight') {
-								el.addClass('fadeInRight animated-fast');
-							} else {
-								el.addClass('fadeInUp animated-fast');
-							}
-
-							el.removeClass('item-animate');
-						},  k * 200, 'easeInOutExpo' );
-					});
-					
-				}, 100);
-				
-			}
-
-		} , { offset: '85%' } );
-	};
-
-
-	var dropdown = function() {
-
-		$('.has-dropdown').mouseenter(function(){
-
-			var $this = $(this);
-			$this
-				.find('.dropdown')
-				.css('display', 'block')
-				.addClass('animated-fast fadeInUpMenu');
-
-		}).mouseleave(function(){
-			var $this = $(this);
-
-			$this
-				.find('.dropdown')
-				.css('display', 'none')
-				.removeClass('animated-fast fadeInUpMenu');
-		});
-
-	};
-
-
-	var testimonialCarousel = function(){
-		var owl = $('.owl-carousel-fullwidth');
-		owl.owlCarousel({
-			items: 1,
-			loop: true,
-			margin: 0,
-			responsiveClass: true,
-			nav: false,
-			dots: true,
-			smartSpeed: 800,
-			autoHeight: true,
-		});
-	};
-
-
-	var goToTop = function() {
-
-		$('.js-gotop').on('click', function(event){
-			
-			event.preventDefault();
-
-			$('html, body').animate({
-				scrollTop: $('html').offset().top
-			}, 500, 'easeInOutExpo');
-			
-			return false;
-		});
-
-		$(window).scroll(function(){
-
-			var $win = $(window);
-			if ($win.scrollTop() > 200) {
-				$('.js-top').addClass('active');
-			} else {
-				$('.js-top').removeClass('active');
-			}
-
-		});
-	
-	};
-
-
-	// Loading page
-	var loaderPage = function() {
-		$(".fh5co-loader").fadeOut("slow");
-	};
-
-	var counter = function() {
-		$('.js-counter').countTo({
-			 formatter: function (value, options) {
-	      return value.toFixed(options.decimals);
-	    },
-		});
-	};
-
-	var counterWayPoint = function() {
-		if ($('#fh5co-counter').length > 0 ) {
-			$('#fh5co-counter').waypoint( function( direction ) {
-										
-				if( direction === 'down' && !$(this.element).hasClass('animated') ) {
-					setTimeout( counter , 400);					
-					$(this.element).addClass('animated');
-				}
-			} , { offset: '90%' } );
-		}
-	};
-
-	// Parallax
-	var parallax = function() {
-		$(window).stellar();
-	};
-
-	
-	$(function(){
-		mobileMenuOutsideClick();
-		parallax();
-		offcanvasMenu();
-		burgerMenu();
-		contentWayPoint();
-		dropdown();
-		testimonialCarousel();
-		goToTop();
-		loaderPage();
-		counter();
-		counterWayPoint();
+// Close menu when clicking a link
+document.querySelectorAll('.nav-links a').forEach(link => {
+	link.addEventListener('click', () => {
+		navLinks.classList.remove('active');
 	});
+});
 
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+	const navbar = document.querySelector('.navbar');
+	if (window.scrollY > 50) {
+		navbar.classList.add('scrolled');
+	} else {
+		navbar.classList.remove('scrolled');
+	}
+});
 
-}());
+// Countdown Timer
+function updateCountdown() {
+	const weddingDate = new Date('November 1, 2025 13:00:00').getTime();
+	const now = new Date().getTime();
+	const distance = weddingDate - now;
+
+	const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+	const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+	const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+	document.getElementById('days').textContent = days.toString().padStart(2, '0');
+	document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+	document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+	document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+	if (distance < 0) {
+		clearInterval(countdownTimer);
+		document.querySelector('.countdown-container').innerHTML = '<h3 style="font-size: 2rem;">We\'re Married!</h3>';
+	}
+}
+
+const countdownTimer = setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+	anchor.addEventListener('click', function (e) {
+		e.preventDefault();
+
+		const targetId = this.getAttribute('href');
+		if (targetId === '#') return;
+
+		const targetElement = document.querySelector(targetId);
+		if (targetElement) {
+			window.scrollTo({
+				top: targetElement.offsetTop - 70,
+				behavior: 'smooth'
+			});
+		}
+	});
+});
+
+/// Timeline animation
+document.addEventListener('DOMContentLoaded',()=>{
+	const i=document.querySelectorAll('.timeline-item');
+	const o=new IntersectionObserver(e=>{
+	  e.forEach(s=>{
+		if(s.isIntersecting){
+		  s.target.classList.add('visible');
+		  o.unobserve(s.target);
+		}
+	  });
+   },{threshold:.1});
+	i.forEach(i=>o.observe(i));
+  });
+  
+  new WOW().init();
+  
+  $(".gallery-loop").owlCarousel({
+	loop: true, // ปิดการทำ loop ที่จะ clone รูป
+	margin: 10,
+	autoplay: true,
+	dots: true,
+	autoplayTimeout: 3000,
+	responsive: {
+		0: { items: 1 },
+		576: { items: 2 },
+		768: { items: 3 },
+		992: { items: 3 }
+	}
+  });
+  $(".special-loop").owlCarousel({
+	loop: true, // ปิดการทำ loop ที่จะ clone รูป
+	margin: 10,
+	autoplay: true,
+	dots: true,
+	autoplayTimeout: 3000,
+	responsive: {
+		0: { items: 1 },
+		576: { items: 2 },
+		768: { items: 2 },
+		992: { items: 2 }
+	}
+  });
+  $(".location-carousel").owlCarousel({
+	loop: false, // ปิดการทำ loop ที่จะ clone รูป
+	margin: 10,
+  
+	dots: true,
+  
+	responsive: {
+		0: { items: 1 },
+		576: { items: 2 },
+		768: { items: 2 },
+		992: { items: 3 }
+	}
+  });
+  document.addEventListener("DOMContentLoaded", function () {
+	const iframe = document.getElementById("rsvp-form");
+	const loader = document.getElementById("iframe-loader");
+  
+	iframe.onload = function () {
+	  loader.style.display = "none";
+	};
+  });
+  
+  document.addEventListener('DOMContentLoaded', () => {
+	const preloader = document.getElementById('preloader');
+	preloader.classList.add('fade-out');
+  });
+  
+   
+  
+  
