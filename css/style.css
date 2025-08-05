@@ -1209,7 +1209,7 @@
            }
 
            .menu-toggle {
-               display: block;
+               /* display: block; */
                z-index: 1001;
            }
 

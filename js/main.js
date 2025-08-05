@@ -81,14 +81,19 @@ document.addEventListener('DOMContentLoaded',()=>{
 	i.forEach(i=>o.observe(i));
   });
   
-  new WOW().init();
+ /*  new WOW().init(); */
   
   $(".gallery-loop").owlCarousel({
-	loop: true, // ปิดการทำ loop ที่จะ clone รูป
-	margin: 10,
-	autoplay: true,
-	dots: true,
-	autoplayTimeout: 3000,
+	loop: true,
+    margin: 10,
+    nav: true,
+    autoplay: true,
+    autoplayTimeout: 4000,
+    smartSpeed: 1200,           // ความเร็ว transition (1.2 วินาที)
+    autoplaySpeed: 1200,        // ความเร็วตอน autoplay
+    autoplayHoverPause: true,
+    animateOut: 'fadeOut',      // ใช้ fade ออก
+    animateIn: 'fadeIn' ,       // ใช้ fade เข้า
 	responsive: {
 		0: { items: 1 },
 		576: { items: 2 },
