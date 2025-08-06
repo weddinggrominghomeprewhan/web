@@ -14,8 +14,9 @@ const navLinks = document.querySelector('.nav-links'); */
 	});
 }); */
 
+
 // Navbar scroll effect
-window.addEventListener('scroll', () => {
+/* window.addEventListener('scroll', () => {
 	const navbar = document.querySelector('.navbar');
 	if (window.scrollY > 50) {
 		navbar.classList.add('scrolled');
@@ -23,7 +24,7 @@ window.addEventListener('scroll', () => {
 		navbar.classList.remove('scrolled');
 	}
 });
-
+ */
 // Countdown Timer
 function updateCountdown() {
 	const weddingDate = new Date('November 1, 2025 13:00:00').getTime();
