@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   
  /*  new WOW().init(); */
   
-  $(".gallery-loop").owlCarousel({
+ /*  $(".gallery-loop").owlCarousel({
 	loop: true,
     margin: 10,
     nav: true,
@@ -100,7 +100,26 @@ document.addEventListener('DOMContentLoaded',()=>{
 		768: { items: 3 },
 		992: { items: 3 }
 	}
-  });
+  }); */
+  $(".gallery-loop").owlCarousel({
+    loop: true,
+    margin: 10,
+    nav: true,
+    autoplay: true,
+    autoplayTimeout: 4000,
+    smartSpeed: 1200,
+    autoplaySpeed: 1200,
+    autoplayHoverPause: true,
+    animateOut: 'fadeOut',
+    animateIn: 'fadeIn',
+    slideBy: 'page',  // 👈 เลื่อนทีละ "หน้า" (เท่ากับจำนวน items ปัจจุบัน)
+    responsive: {
+        0: { items: 1 },
+        576: { items: 2 },
+        768: { items: 3 },
+        992: { items: 3 }
+    }
+});
   $(".special-loop").owlCarousel({
 	loop: true, // ปิดการทำ loop ที่จะ clone รูป
 	margin: 10,
