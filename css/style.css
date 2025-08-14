@@ -1395,6 +1395,16 @@
            }
        }
 
+       @media(max-width:932px) {
+        .hero {
+            height: 120vh;
+        }
+        #button {
+            display: none;
+        }
+
+    }
+
        /* Responsive Styles */
        @media (max-width: 992px) {
            .about-content {
