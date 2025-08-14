@@ -248,6 +248,78 @@
 
        }
 
+       #toTop {
+           position: fixed;
+           right: 16px;
+           bottom: 16px;
+           z-index: 999;
+           width: 40px;
+           height: 40px;
+           border-radius: 50%;
+           border: none;
+           background: rgba(0, 0, 0, .6);
+           color: #fff;
+           cursor: pointer;
+           box-shadow: 0 6px 14px rgba(0, 0, 0, .25);
+           backdrop-filter: blur(4px);
+           display: none;
+           align-items: center;
+           justify-content: center;
+           font-size: 18px
+       }
+
+       #toTop:focus-visible {
+           outline: 2px solid #fff;
+           outline-offset: 2px
+       }
+
+       .mobile-cta {
+           z-index: 900;
+       }
+
+       /* แถบ CTA ลอยด้านล่าง */
+       #toTop {
+           z-index: 950;
+       }
+
+       /* ปุ่มกลับขึ้นบน ให้อยู่เหนือ CTA นิดหน่อย */
+
+       /* 2) ตำแหน่ง + safe-area (iOS notch) */
+       .mobile-cta {
+           position: fixed;
+           left: 0;
+           right: 0;
+           bottom: calc(0px + env(safe-area-inset-bottom));
+           background: rgba(25, 25, 25, .65);
+           backdrop-filter: blur(6px);
+       }
+
+       #toTop {
+           position: fixed;
+           right: 16px;
+           bottom: calc(70px + env(safe-area-inset-bottom));
+           /* ลอยเหนือแถบ CTA */
+       }
+
+       /* 3) ซ่อน CTA/ปุ่มกลับขึ้นบน เมื่อเมนูมือถือเปิด */
+       .menu-open .mobile-cta,
+       .menu-open #toTop {
+           transform: translateY(120%);
+           opacity: 0;
+           pointer-events: none;
+           transition: transform .2s ease, opacity .2s ease;
+       }
+
+       /* 4) กันคอนเทนต์ล่างไม่ถูกบังด้วยแถบ CTA บนจอเล็ก */
+       @media (max-width: 991px) {
+           body.has-mobile-cta {
+               padding-bottom: calc(64px + env(safe-area-inset-bottom));
+               /* สำหรับ iOS เก่ามากๆ */
+               padding-bottom: calc(64px + constant(safe-area-inset-bottom));
+           }
+       }
+
+
        .btn {
            display: inline-block;
            padding: 12px 30px;
@@ -276,10 +348,24 @@
            color: var(--dark);
        }
 
+
        /* About Section */
        .section {
            padding: 100px 0;
        }
+
+       /* เพิ่มใน style.css */
+       .section-sep .sep {
+           display: block;
+           width: 100%;
+           height: 64px
+       }
+
+       .section-sep path {
+           fill: var(--light)
+       }
+
+       /* ให้พื้นของ section ถัดไปดูกลืนกัน */
 
        .section-title {
            text-align: center;
@@ -362,6 +448,126 @@
 
 
        /* Gallery Section */
+       /* .special-gallery {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+           gap: 16px;
+           margin: 20px 0
+       }
+
+       .polaroid {
+           background: #fff;
+           padding: 10px;
+           border-radius: 8px;
+           box-shadow: 0 8px 18px rgba(0, 0, 0, .1);
+           transform: rotate(-1.5deg)
+       }
+
+       .polaroid:nth-child(2) {
+           transform: rotate(1.2deg)
+       }
+
+       .polaroid:nth-child(3) {
+           transform: rotate(-0.6deg)
+       }
+
+       .polaroid img {
+           width: 100%;
+           height: 220px;
+           object-fit: cover;
+           border-radius: 6px
+       }
+
+       .polaroid figcaption {
+           text-align: center;
+           margin-top: 8px;
+           font-family: 'Kanit', sans-serif;
+           color: #704f55;
+           font-size: .95rem
+       } */
+       /* สัดส่วน/ขนาดที่ต้องการปรับได้ง่าย */
+       :root {
+           --polaroid-aspect: 3 / 4;
+           /* อัตราส่วนกรอบ (เช่น 3/4, 4/5, 1/1) */
+       }
+
+       /* กริดยืดหยุ่น + ช่องไฟปรับตามจอ */
+       .special-gallery {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+           gap: clamp(12px, 2vw, 20px);
+           margin: 20px 0;
+           align-items: start;
+       }
+
+       /* เฟรมโพลารอยด์ + เงา + หมุนเบาๆ */
+       .polaroid {
+           background: #fff;
+           padding: 10px 10px 14px;
+           border-radius: 10px;
+           box-shadow: 0 8px 18px rgba(0, 0, 0, .08);
+           transform: rotate(-1.5deg);
+           transition: transform .15s ease;
+       }
+
+       .polaroid:nth-child(2) {
+           transform: rotate(1.2deg)
+       }
+
+       .polaroid:nth-child(3) {
+           transform: rotate(-0.6deg)
+       }
+
+       .polaroid:hover {
+           transform: rotate(0) translateY(-2px)
+       }
+
+       /* ✅ รูปพอดีด้วยสัดส่วนคงที่ + ครอบเต็มกรอบอย่างสวย (ยอมครอปเล็กน้อย) */
+       .polaroid img {
+           width: 100%;
+           aspect-ratio: var(--polaroid-aspect);
+           height: auto;
+           display: block;
+           object-fit: cover;
+           /* เต็มกรอบ สวยเท่ากันทุกใบ */
+           object-position: center;
+           border-radius: 6px;
+       }
+
+       /* ตัวเลือก: ถ้าอยากเห็นรูปเต็มใบไม่ครอป ให้เติม class .polaroid--contain กับ figure */
+       .polaroid--contain img {
+           object-fit: contain;
+           /* ไม่ครอป แต่จะมีขอบดำ/ขาวตามพื้นหลัง */
+           background: #000;
+           /* เปลี่ยนเป็นสีที่ต้องการได้ */
+           padding: 6px;
+           border-radius: 6px;
+       }
+
+       /* คำบรรยาย */
+       .polaroid figcaption {
+           text-align: center;
+           margin-top: 10px;
+           font-family: 'Kanit', sans-serif;
+           color: #704f55;
+           font-size: .95rem;
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
+       }
+
+       /* ลดเอียงบนจอเล็ก + ปรับสัดส่วนให้โดนมากขึ้น */
+       @media (max-width:480px) {
+           :root {
+               --polaroid-aspect: 4 / 5;
+           }
+
+           /* ตั้งให้สูงขึ้นเล็กน้อยบนมือถือ */
+           .polaroid {
+               transform: none;
+           }
+       }
+
        .gallery {
            background-color: var(--light);
        }
@@ -955,6 +1161,7 @@
 
        /* RSVP Section */
 
+       
        .rsvp {
            /*  background-color: var(--light); */
            text-align: center;
@@ -1157,6 +1364,37 @@
            font-size: 0.9rem;
        }
 
+       .mobile-cta {
+           position: fixed;
+           left: 0;
+           right: 0;
+           bottom: 0;
+           z-index: 900;
+           display: flex;
+           justify-content: space-around;
+           gap: 6px;
+           padding: 10px 12px;
+           background: rgba(25, 25, 25, .65);
+           backdrop-filter: blur(6px)
+       }
+
+       .mobile-cta a {
+           flex: 1;
+           text-align: center;
+           color: #fff;
+           text-decoration: none;
+           padding: 10px 12px;
+           border-radius: 12px;
+           border: 1px solid rgba(255, 255, 255, .2);
+           font-size: 13px;
+       }
+
+       @media(min-width:992px) {
+           .mobile-cta {
+               display: none
+           }
+       }
+
        /* Responsive Styles */
        @media (max-width: 992px) {
            .about-content {
@@ -1173,6 +1411,11 @@
        }
 
        @media (max-width: 768px) {
+
+           #button {
+               display: none;
+           }
+
            .navbar {
                padding: 15px 20px;
            }

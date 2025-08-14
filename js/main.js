@@ -69,59 +69,59 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 /// Timeline animation
-document.addEventListener('DOMContentLoaded',()=>{
-	const i=document.querySelectorAll('.timeline-item');
-	const o=new IntersectionObserver(e=>{
-	  e.forEach(s=>{
-		if(s.isIntersecting){
-		  s.target.classList.add('visible');
-		  o.unobserve(s.target);
-		}
-	  });
-   },{threshold:.1});
-	i.forEach(i=>o.observe(i));
-  });
-  
- /*  new WOW().init(); */
-  
- /*  $(".gallery-loop").owlCarousel({
+document.addEventListener('DOMContentLoaded', () => {
+	const i = document.querySelectorAll('.timeline-item');
+	const o = new IntersectionObserver(e => {
+		e.forEach(s => {
+			if (s.isIntersecting) {
+				s.target.classList.add('visible');
+				o.unobserve(s.target);
+			}
+		});
+	}, { threshold: .1 });
+	i.forEach(i => o.observe(i));
+});
+
+/*  new WOW().init(); */
+
+/*  $(".gallery-loop").owlCarousel({
+   loop: true,
+   margin: 10,
+   nav: true,
+   autoplay: true,
+   autoplayTimeout: 4000,
+   smartSpeed: 1200,           // ความเร็ว transition (1.2 วินาที)
+   autoplaySpeed: 1200,        // ความเร็วตอน autoplay
+   autoplayHoverPause: true,
+   animateOut: 'fadeOut',      // ใช้ fade ออก
+   animateIn: 'fadeIn' ,       // ใช้ fade เข้า
+   responsive: {
+	   0: { items: 1 },
+	   576: { items: 2 },
+	   768: { items: 3 },
+	   992: { items: 3 }
+   }
+ }); */
+$(".gallery-loop").owlCarousel({
 	loop: true,
-    margin: 10,
-    nav: true,
-    autoplay: true,
-    autoplayTimeout: 4000,
-    smartSpeed: 1200,           // ความเร็ว transition (1.2 วินาที)
-    autoplaySpeed: 1200,        // ความเร็วตอน autoplay
-    autoplayHoverPause: true,
-    animateOut: 'fadeOut',      // ใช้ fade ออก
-    animateIn: 'fadeIn' ,       // ใช้ fade เข้า
+	margin: 10,
+	nav: true,
+	autoplay: true,
+	autoplayTimeout: 4000,
+	smartSpeed: 1200,
+	autoplaySpeed: 1200,
+	autoplayHoverPause: true,
+	animateOut: 'fadeOut',
+	animateIn: 'fadeIn',
+	slideBy: 'page',  // 👈 เลื่อนทีละ "หน้า" (เท่ากับจำนวน items ปัจจุบัน)
 	responsive: {
 		0: { items: 1 },
 		576: { items: 2 },
 		768: { items: 3 },
 		992: { items: 3 }
 	}
-  }); */
-  $(".gallery-loop").owlCarousel({
-    loop: true,
-    margin: 10,
-    nav: true,
-    autoplay: true,
-    autoplayTimeout: 4000,
-    smartSpeed: 1200,
-    autoplaySpeed: 1200,
-    autoplayHoverPause: true,
-    animateOut: 'fadeOut',
-    animateIn: 'fadeIn',
-    slideBy: 'page',  // 👈 เลื่อนทีละ "หน้า" (เท่ากับจำนวน items ปัจจุบัน)
-    responsive: {
-        0: { items: 1 },
-        576: { items: 2 },
-        768: { items: 3 },
-        992: { items: 3 }
-    }
 });
-  $(".special-loop").owlCarousel({
+$(".special-loop").owlCarousel({
 	loop: true, // ปิดการทำ loop ที่จะ clone รูป
 	margin: 10,
 	autoplay: true,
@@ -133,34 +133,63 @@ document.addEventListener('DOMContentLoaded',()=>{
 		768: { items: 2 },
 		992: { items: 2 }
 	}
-  });
-  $(".location-carousel").owlCarousel({
+});
+$(".location-carousel").owlCarousel({
 	loop: false, // ปิดการทำ loop ที่จะ clone รูป
 	margin: 10,
-  
+
 	dots: true,
-  
+
 	responsive: {
 		0: { items: 1 },
 		576: { items: 2 },
 		768: { items: 2 },
 		992: { items: 3 }
 	}
-  });
-  document.addEventListener("DOMContentLoaded", function () {
+});
+document.addEventListener("DOMContentLoaded", function () {
 	const iframe = document.getElementById("rsvp-form");
 	const loader = document.getElementById("iframe-loader");
-  
+
 	iframe.onload = function () {
-	  loader.style.display = "none";
+		loader.style.display = "none";
 	};
-  });
-  
-  document.addEventListener('DOMContentLoaded', () => {
+});
+
+document.addEventListener('DOMContentLoaded', () => {
 	const preloader = document.getElementById('preloader');
 	preloader.classList.add('fade-out');
+});
+
+(function () {
+	const btn = document.getElementById('toTop');
+	if (!btn) return;
+	window.addEventListener('scroll', () => { btn.style.display = window.scrollY > 600 ? 'flex' : 'none'; });
+	btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+	const root = document.documentElement;
+	const nav  = document.querySelector('.nav-links');     // เมนูรายการ
+	const toggle = document.querySelector('.menu-toggle'); // ปุ่มแฮมเบอร์เกอร์
+  
+	// เมื่อกดปุ่มเมนู: toggle class menu-open ที่ <html>
+	if (toggle && nav) {
+	  toggle.addEventListener('click', () => {
+		nav.classList.toggle('active');
+		root.classList.toggle('menu-open', nav.classList.contains('active'));
+	  });
+	  // คลิกลิงก์ในเมนูแล้วปิดเมนู
+	  nav.querySelectorAll('a').forEach(a => {
+		a.addEventListener('click', () => {
+		  nav.classList.remove('active');
+		  root.classList.remove('menu-open');
+		});
+	  });
+	}
+  
+	// ถ้ามีแถบ CTA อยู่ ให้เติมธงเพื่อใส่ padding-bottom (กันบังคอนเทนต์)
+	if (document.querySelector('.mobile-cta')) {
+	  document.body.classList.add('has-mobile-cta');
+	}
   });
-  
-   
-  
-  
