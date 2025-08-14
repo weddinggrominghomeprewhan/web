@@ -362,7 +362,7 @@
        }
 
        .section-sep path {
-           fill: var(--light)
+           fill: #f9f3f3;
        }
 
        /* ให้พื้นของ section ถัดไปดูกลืนกัน */
