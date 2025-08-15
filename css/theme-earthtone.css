@@ -1,0 +1,119 @@
+
+/* === Earthtone Theme Pack (drop-in override) ===
+   How to use:
+   1) Link this file AFTER your base styles, e.g.
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="css/theme-earthtone.css">
+   2) No class changes required; this overrides CSS variables + a few accents.
+*/
+
+:root{
+  /* Core palette */
+  --earth-sand:      #F2E9E4;
+  --earth-rose:      #E7B7A2;
+  --earth-terracotta:#C9836B;
+  --earth-clay:      #7D5A5A;
+  --earth-sage:      #9BB38F;
+  --earth-olive:     #8A7E6D;
+  --earth-choco:     #4A372E;
+  --earth-gold:      #D7B98C;
+
+  /* Map to site tokens (override) */
+  --primary:   var(--earth-rose);
+  --secondary: var(--earth-clay);
+  --accent:    var(--earth-terracotta);
+  --light:     var(--earth-sand);
+  --dark:      var(--earth-choco);
+  --btn:       #794a2e; /* keep brand-y brown */
+  --brown:     #916e57;
+
+  --text:      #3a2e2e;
+  --muted:     #6f5e55;
+}
+
+/* Body text color tweak for readability */
+body{ color: var(--text); background:#fff; }
+
+/* Gradient heading accent */
+
+
+/* Thin gold ornament under headings (opt-in via .ornament markup if present) */
+.orn{ color: var(--earth-gold); }
+
+/* Buttons (capsule) */
+.btn{
+  background: var(--btn);
+  border-color: var(--btn);
+}
+.btn:hover{
+  background: transparent;
+  color: var(--btn);
+  border-color: var(--btn);
+}
+
+/* Hero / Hotel / Location overlays warmed to earthtone */
+.hero{ 
+  background-image:
+    linear-gradient(rgba(74,55,46,.55), rgba(74,55,46,.40)), 
+    url('../image/slide.png');
+  background-size: cover;
+  background-position: center;
+}
+.countdown{
+  background-image:
+    linear-gradient(rgba(125,90,90,.65), rgba(74,55,46,.65)),
+    url('../image/ring-background.jpg');
+}
+.hotel{
+  background-image:
+    linear-gradient(rgba(58,46,46,.72), rgba(58,46,46,.72)),
+    url('../image/party.jpg');
+}
+.location{
+  background-image:
+    linear-gradient(rgba(74,55,46,.70), rgba(74,55,46,.70)),
+    url('../image/wedding.jpg');
+}
+
+/* Gallery hover icon stays readable on warm images */
+.gallery-item .hover-icon img{ filter: invert(1) sepia(0) opacity(.95); }
+.gallery-item .image-container{
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  border-radius: 10px; overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.gallery-item:hover .image-container{
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.18);
+}
+
+/* Glassy hotel cards with gold inner line */
+.org-card{
+  background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.10));
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow: 0 10px 24px rgba(0,0,0,.22), inset 0 0 0 1px rgba(215,185,140,.25);
+}
+
+/* Mobile CTA bar tint */
+.mobile-cta{ background: rgba(58,46,46,.72); border-top: 1px solid rgba(215,185,140,.3); }
+.mobile-cta a{ border-color: rgba(255,255,255,.25); }
+.mobile-cta img{ filter: invert(1) opacity(.95); }
+
+/* Confetti colors tuned to earthtone (if used) */
+.confetti i{ background: var(--earth-terracotta); }
+.confetti i:nth-child(3n){ background: var(--earth-gold); }
+.confetti i:nth-child(3n+1){ background: var(--earth-rose); }
+
+/* Links and focus */
+a{ color: var(--earth-clay); }
+a:hover{ color: var(--earth-terracotta); }
+.btn:focus-visible, .no-underline:focus-visible{
+  outline: 3px solid var(--earth-gold);
+  outline-offset: 2px;
+}
+
+/* WCAG-friendly contrasts for light text on images */
+.color-white, .countdown, .hotel, .location{ text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+
+/* Optional: warm tone filter utility for images if needed */
+img.warmify{ filter: sepia(.08) saturate(.9) hue-rotate(-6deg) contrast(1.02); }

@@ -193,3 +193,57 @@ document.addEventListener('DOMContentLoaded', () => {
 	  document.body.classList.add('has-mobile-cta');
 	}
   });
+
+  document.addEventListener('click',e=>{
+	const b=e.target.closest('.btn'); if(!b) return;
+	const r=b.getBoundingClientRect(); b.style.setProperty('--x',(e.clientX-r.left)+'px'); b.style.setProperty('--y',(e.clientY-r.top)+'px');
+	b.classList.add('ripple'); setTimeout(()=>b.classList.remove('ripple'),380);
+  },{passive:true});
+
+
+  document.addEventListener('DOMContentLoaded',()=>{
+	const els=[...document.querySelectorAll('.event-card,.org-card,.gallery-item,.polaroid')];
+	const io=new IntersectionObserver(es=>es.forEach(e=>{
+	  if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+	}),{threshold:.12});
+	els.forEach(el=>{ el.classList.add('reveal'); io.observe(el); });
+  });
+
+  // ต่อท้าย js/main.js
+(function(){
+	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+	const hero = document.querySelector('.hero'); if(!hero) return;
+	const content = hero.querySelector('.hero-content');
+	function onScroll(){
+	  const y = Math.min(1, window.scrollY/600);
+	  hero.style.backgroundPosition = `center ${y*20}px`;
+	  if(content) content.style.transform = `translateY(${y*8}px)`;
+	}
+	window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  })();
+
+  (function(){
+	const lat = 13.734491, lng = 99.746216;
+	const openBtn = document.getElementById('open-map');
+	const copyBtn = document.getElementById('copy-coords');
+  
+	if (openBtn){
+	  openBtn.addEventListener('click', (e)=>{
+		e.preventDefault();
+		const isApple = /iPad|iPhone|Macintosh/.test(navigator.userAgent);
+		const url = isApple
+		  ? `https://maps.apple.com/?ll=${lat},${lng}&q=${encodeURIComponent('ไร่ภาพตะวัน')}`
+		  : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+		window.open(url, '_blank', 'noopener');
+	  });
+	}
+	if (copyBtn && navigator.clipboard){
+	  copyBtn.addEventListener('click', async ()=>{
+		try{
+		  await navigator.clipboard.writeText(`${lat}, ${lng}`);
+		  copyBtn.textContent = 'คัดลอกแล้ว ✓';
+		  setTimeout(()=> copyBtn.textContent = 'คัดลอกพิกัด', 1500);
+		}catch(_){}
+	  });
+	}
+  })();

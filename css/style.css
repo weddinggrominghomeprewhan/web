@@ -202,6 +202,17 @@
            position: relative;
        }
 
+       /* วางกับ hero / hotel / location ตามต้องการ */
+       .hero::after {
+           content: "";
+           position: absolute;
+           inset: 0;
+           pointer-events: none;
+           opacity: .15;
+           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+           mix-blend-mode: multiply;
+       }
+
        .hero-content {
            max-width: 800px;
            padding: 0 20px;
@@ -347,6 +358,44 @@
            background-color: var(--white);
            color: var(--dark);
        }
+
+       .btn {
+           position: relative;
+           overflow: hidden
+       }
+
+       .btn::after {
+           content: "";
+           position: absolute;
+           inset: auto;
+           left: var(--x, 50%);
+           top: var(--y, 50%);
+           width: 0;
+           height: 0;
+           border-radius: 50%;
+           background: rgba(255, 255, 255, .35);
+           transform: translate(-50%, -50%);
+           transition: width .35s ease, height .35s ease, opacity .45s ease;
+           opacity: 0;
+       }
+
+       .btn.ripple::after {
+           width: 220px;
+           height: 220px;
+           opacity: 1
+       }
+
+       .reveal {
+           opacity: 0;
+           transform: translateY(18px);
+           transition: opacity .5s ease, transform .5s ease
+       }
+
+       .reveal.visible {
+           opacity: 1;
+           transform: none
+       }
+
 
 
        /* About Section */
@@ -1161,7 +1210,7 @@
 
        /* RSVP Section */
 
-       
+
        .rsvp {
            /*  background-color: var(--light); */
            text-align: center;
@@ -1316,6 +1365,48 @@
            z-index: 0;
        }
 
+       .map-wrap {
+           max-width: 1000px;
+           margin: 0 auto;
+           aspect-ratio: 16 / 9;
+           border-radius: 12px;
+           overflow: hidden;
+           background: #eee;
+           box-shadow: 0 10px 28px rgba(0, 0, 0, .12);
+       }
+
+       .map-wrap iframe {
+           width: 100%;
+           height: 100%;
+           border: 0;
+           display: block;
+       }
+
+       .map-caption {
+           text-align: center;
+           color: #704f55;
+           margin-top: 10px;
+       }
+
+       .map-actions {
+           display: flex;
+           gap: 10px;
+           justify-content: center;
+           flex-wrap: wrap;
+           margin-top: 12px;
+       }
+
+       .btn-ghost {
+           background: transparent;
+           border: 2px solid var(--btn);
+           color: var(--btn);
+       }
+
+       .btn-ghost:hover {
+           background: var(--btn);
+           color: #fff;
+       }
+
        iframe {
            position: relative;
            z-index: 1;
@@ -1396,14 +1487,15 @@
        }
 
        @media(max-width:932px) {
-        .hero {
-            height: 120vh;
-        }
-        #button {
-            display: none;
-        }
+           .hero {
+               height: 120vh;
+           }
 
-    }
+           #button {
+               display: none;
+           }
+
+       }
 
        /* Responsive Styles */
        @media (max-width: 992px) {
