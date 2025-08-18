@@ -1482,7 +1482,12 @@
 
        @media(min-width:992px) {
            .mobile-cta {
-               display: none
+               display: none;
+           }
+           .rsvp-fallback{
+
+                display: none;
+
            }
        }
 
@@ -1516,6 +1521,10 @@
 
            #button {
                display: none;
+           }
+
+           .rsvp-fallback{
+            display: block; 
            }
 
            .navbar {
