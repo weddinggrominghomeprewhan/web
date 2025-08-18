@@ -249,34 +249,29 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
 (function(){
-  const link = document.getElementById('rsvp-external');
-  if (!link) return;
-
-  // ตรวจถ้าอยู่ใน FB/IG in-app browser
+  const iframe   = document.getElementById('rsvp-form');
+  const loader   = document.getElementById('iframe-loader');
+  const fallback = document.getElementById('rsvp-fallback');
   const inApp = /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(navigator.userAgent || '');
 
-  link.addEventListener('click', function(e){
-    // กัน smooth-scroll/global handlers อื่น ๆ
-    e.stopPropagation();
+  let loaded = false;
 
-    // ใน in-app บางที target=_blank ไม่ช่วย → บังคับเปิดด้วย JS
-    const url = this.href;
-    let ok = false;
-    try{
-      const w = window.open(url, '_blank', 'noopener');
-      ok = !!w;
-    }catch(_){}
-
-    if (!ok){
-      // fallback: เปิดทับแทน
-      location.href = url;
-    }
-  }, false);
-
-  // แสดงโน้ตแนะนำผู้ใช้ในแอป (optional)
-  if (inApp) {
-    console.log('Tip: ใน FB/IG ให้กดเมนู ⋯ แล้วเลือก "Open in Browser" เพื่อกรอกฟอร์ม');
+  if (iframe) {
+    iframe.addEventListener('load', () => {
+      loaded = true;
+      if (loader)   loader.style.display   = 'none';
+      if (fallback) fallback.style.display = 'none';  // ซ่อน fallback เมื่อโหลดได้
+    });
   }
+
+  // ถ้าเปิดใน FB/IG → โชว์ปุ่มสำรองไว้เลย
+  if (inApp && fallback) fallback.style.display = 'block';
+
+  // เผื่อกรณี onload ไม่มาใน in-app → รอ 7 วินาทีแล้วแสดง fallback
+  setTimeout(() => {
+    if (!loaded && fallback) fallback.style.display = 'block';
+    if (!loaded && loader)  loader.style.display   = 'none';
+  }, 7000);
 })();
 
 // กวาด text node คำว่า 'undefined' ที่โผล่มาแบบไม่ตั้งใจ
