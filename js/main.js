@@ -247,3 +247,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	  });
 	}
   })();
+
+  (function(){
+  const iframe   = document.getElementById('rsvp-form');
+  const loader   = document.getElementById('iframe-loader');
+  const fallback = document.getElementById('rsvp-fallback');
+
+  function isInAppBrowser(){
+    const ua = navigator.userAgent || '';
+    // FB/IG in-app browser fingerprints
+    return /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(ua);
+  }
+
+  let loaded = false;
+  if (iframe) {
+    iframe.addEventListener('load', () => {
+      loaded = true;
+      if (loader) loader.style.display = 'none';
+    });
+  }
+
+  // ถ้าเป็น in-app → โชว์ปุ่มสำรองไว้เลย
+  if (isInAppBrowser() && fallback) {
+    fallback.style.display = 'block';
+  }
+
+  // กันกรณี onload ไม่มา/ช้ามาก: รอ ~7s แล้วแสดงปุ่มสำรอง
+  setTimeout(() => {
+    if (!loaded && fallback) fallback.style.display = 'block';
+    if (!loaded && loader)  loader.style.display   = 'none';
+  }, 7000);
+})();
