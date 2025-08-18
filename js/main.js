@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
   })();
 
-  (function(){
+(function(){
   const iframe   = document.getElementById('rsvp-form');
   const loader   = document.getElementById('iframe-loader');
   const fallback = document.getElementById('rsvp-fallback');
