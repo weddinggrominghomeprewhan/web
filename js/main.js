@@ -26,26 +26,6 @@ const navLinks = document.querySelector('.nav-links'); */
 });
  */
 
-
-
-  // กวาด text node "undefined" ให้เร็วที่สุด + เฝ้า DOM ต่อเนื่อง
-  (function(){
-    const isBad = v => typeof v === 'string' && /^\s*undefined\s*$/i.test(v);
-    function sweep(root){
-      const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
-      let n, del=[];
-      while(n = w.nextNode()) if (isBad(n.nodeValue)) del.push(n);
-      del.forEach(t => t.parentNode && t.parentNode.removeChild(t));
-    }
-    // กวาดตั้งแต่ documentElement เพื่อครอบคลุม text ที่แทรกนอก <body> ด้วย
-    sweep(document.documentElement);
-    new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n=>{
-      if (n.nodeType === 3 && isBad(n.nodeValue)) n.remove();
-      else if (n.nodeType === 1) sweep(n);
-    }))).observe(document.documentElement, {childList:true, subtree:true});
-  })();
-
-
 // Countdown Timer
 function updateCountdown() {
 	const weddingDate = new Date('November 1, 2025 13:00:00').getTime();

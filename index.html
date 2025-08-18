@@ -70,6 +70,32 @@
 </head>
 
 <body>
+    <script>
+  // ลบ text node "undefined/undifine" ให้เร็วที่สุด + เฝ้า DOM ต่อเนื่อง
+  (function(){
+    const isBad = v => typeof v === 'string' && /^\s*undefin(?:ed|e)?\s*$/i.test(v);
+    function sweep(node){
+      if (!node) return;
+      if (node.nodeType === 3){ // text node
+        if (isBad(node.nodeValue)) node.nodeValue = '';
+        return;
+      }
+      const w = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null, false);
+      let t; while (t = w.nextNode()) if (isBad(t.nodeValue)) t.nodeValue = '';
+    }
+    // กวาดตั้งแต่ documentElement ครอบคลุมทั้งหน้า
+    sweep(document.documentElement);
+    new MutationObserver(muts=>{
+      for (const m of muts){
+        if (m.type === 'characterData'){
+          if (isBad(m.target.nodeValue)) m.target.nodeValue = '';
+        } else if (m.addedNodes && m.addedNodes.length){
+          m.addedNodes.forEach(sweep);
+        }
+      }
+    }).observe(document.documentElement, {subtree:true, childList:true, characterData:true});
+  })();
+  </script>
     <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-spinner">
