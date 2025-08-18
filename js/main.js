@@ -249,32 +249,51 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
 (function(){
-  const iframe   = document.getElementById('rsvp-form');
-  const loader   = document.getElementById('iframe-loader');
-  const fallback = document.getElementById('rsvp-fallback');
+  const link = document.getElementById('rsvp-external');
+  if (!link) return;
 
-  function isInAppBrowser(){
-    const ua = navigator.userAgent || '';
-    // FB/IG in-app browser fingerprints
-    return /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(ua);
+  // ตรวจถ้าอยู่ใน FB/IG in-app browser
+  const inApp = /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(navigator.userAgent || '');
+
+  link.addEventListener('click', function(e){
+    // กัน smooth-scroll/global handlers อื่น ๆ
+    e.stopPropagation();
+
+    // ใน in-app บางที target=_blank ไม่ช่วย → บังคับเปิดด้วย JS
+    const url = this.href;
+    let ok = false;
+    try{
+      const w = window.open(url, '_blank', 'noopener');
+      ok = !!w;
+    }catch(_){}
+
+    if (!ok){
+      // fallback: เปิดทับแทน
+      location.href = url;
+    }
+  }, false);
+
+  // แสดงโน้ตแนะนำผู้ใช้ในแอป (optional)
+  if (inApp) {
+    console.log('Tip: ใน FB/IG ให้กดเมนู ⋯ แล้วเลือก "Open in Browser" เพื่อกรอกฟอร์ม');
   }
+})();
 
-  let loaded = false;
-  if (iframe) {
-    iframe.addEventListener('load', () => {
-      loaded = true;
-      if (loader) loader.style.display = 'none';
-    });
+// กวาด text node คำว่า 'undefined' ที่โผล่มาแบบไม่ตั้งใจ
+(function cleanUndefined(){
+  function sweep(root){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    let n, bad=[];
+    while(n = walker.nextNode()){
+      if (n.nodeValue && n.nodeValue.trim() === 'undefined') bad.push(n);
+    }
+    bad.forEach(t => t.parentNode && t.parentNode.removeChild(t));
   }
-
-  // ถ้าเป็น in-app → โชว์ปุ่มสำรองไว้เลย
-  if (isInAppBrowser() && fallback) {
-    fallback.style.display = 'block';
-  }
-
-  // กันกรณี onload ไม่มา/ช้ามาก: รอ ~7s แล้วแสดงปุ่มสำรอง
-  setTimeout(() => {
-    if (!loaded && fallback) fallback.style.display = 'block';
-    if (!loaded && loader)  loader.style.display   = 'none';
-  }, 7000);
+  sweep(document.body);
+  // เฝ้าต่อเพื่อกันโผล่มาใหม่
+  const mo = new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n => {
+    if (n.nodeType === 3 && n.nodeValue.trim() === 'undefined') n.remove();
+    else if (n.nodeType === 1) sweep(n);
+  })));
+  mo.observe(document.body, {childList:true, subtree:true});
 })();
