@@ -171,119 +171,121 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 	const root = document.documentElement;
-	const nav  = document.querySelector('.nav-links');     // เมนูรายการ
+	const nav = document.querySelector('.nav-links');     // เมนูรายการ
 	const toggle = document.querySelector('.menu-toggle'); // ปุ่มแฮมเบอร์เกอร์
-  
+
 	// เมื่อกดปุ่มเมนู: toggle class menu-open ที่ <html>
 	if (toggle && nav) {
-	  toggle.addEventListener('click', () => {
-		nav.classList.toggle('active');
-		root.classList.toggle('menu-open', nav.classList.contains('active'));
-	  });
-	  // คลิกลิงก์ในเมนูแล้วปิดเมนู
-	  nav.querySelectorAll('a').forEach(a => {
-		a.addEventListener('click', () => {
-		  nav.classList.remove('active');
-		  root.classList.remove('menu-open');
+		toggle.addEventListener('click', () => {
+			nav.classList.toggle('active');
+			root.classList.toggle('menu-open', nav.classList.contains('active'));
 		});
-	  });
+		// คลิกลิงก์ในเมนูแล้วปิดเมนู
+		nav.querySelectorAll('a').forEach(a => {
+			a.addEventListener('click', () => {
+				nav.classList.remove('active');
+				root.classList.remove('menu-open');
+			});
+		});
 	}
-  
+
 	// ถ้ามีแถบ CTA อยู่ ให้เติมธงเพื่อใส่ padding-bottom (กันบังคอนเทนต์)
 	if (document.querySelector('.mobile-cta')) {
-	  document.body.classList.add('has-mobile-cta');
+		document.body.classList.add('has-mobile-cta');
 	}
-  });
+});
 
-  document.addEventListener('click',e=>{
-	const b=e.target.closest('.btn'); if(!b) return;
-	const r=b.getBoundingClientRect(); b.style.setProperty('--x',(e.clientX-r.left)+'px'); b.style.setProperty('--y',(e.clientY-r.top)+'px');
-	b.classList.add('ripple'); setTimeout(()=>b.classList.remove('ripple'),380);
-  },{passive:true});
+document.addEventListener('click', e => {
+	const b = e.target.closest('.btn'); if (!b) return;
+	const r = b.getBoundingClientRect(); b.style.setProperty('--x', (e.clientX - r.left) + 'px'); b.style.setProperty('--y', (e.clientY - r.top) + 'px');
+	b.classList.add('ripple'); setTimeout(() => b.classList.remove('ripple'), 380);
+}, { passive: true });
 
 
-  document.addEventListener('DOMContentLoaded',()=>{
-	const els=[...document.querySelectorAll('.event-card,.org-card,.gallery-item,.polaroid')];
-	const io=new IntersectionObserver(es=>es.forEach(e=>{
-	  if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
-	}),{threshold:.12});
-	els.forEach(el=>{ el.classList.add('reveal'); io.observe(el); });
-  });
+document.addEventListener('DOMContentLoaded', () => {
+	const els = [...document.querySelectorAll('.event-card,.org-card,.gallery-item,.polaroid')];
+	const io = new IntersectionObserver(es => es.forEach(e => {
+		if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+	}), { threshold: .12 });
+	els.forEach(el => { el.classList.add('reveal'); io.observe(el); });
+});
 
-  // ต่อท้าย js/main.js
-(function(){
+// ต่อท้าย js/main.js
+(function () {
 	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-	const hero = document.querySelector('.hero'); if(!hero) return;
+	const hero = document.querySelector('.hero'); if (!hero) return;
 	const content = hero.querySelector('.hero-content');
-	function onScroll(){
-	  const y = Math.min(1, window.scrollY/600);
-	  hero.style.backgroundPosition = `center ${y*20}px`;
-	  if(content) content.style.transform = `translateY(${y*8}px)`;
+	function onScroll() {
+		const y = Math.min(1, window.scrollY / 600);
+		hero.style.backgroundPosition = `center ${y * 20}px`;
+		if (content) content.style.transform = `translateY(${y * 8}px)`;
 	}
-	window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
-  })();
+	window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
 
-  (function(){
+(function () {
 	const lat = 13.734491, lng = 99.746216;
 	const openBtn = document.getElementById('open-map');
 	const copyBtn = document.getElementById('copy-coords');
-  
-	if (openBtn){
-	  openBtn.addEventListener('click', (e)=>{
-		e.preventDefault();
-		const isApple = /iPad|iPhone|Macintosh/.test(navigator.userAgent);
-		const url = isApple
-		  ? `https://maps.apple.com/?ll=${lat},${lng}&q=${encodeURIComponent('ไร่ภาพตะวัน')}`
-		  : `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
-		window.open(url, '_blank', 'noopener');
-	  });
-	}
-	if (copyBtn && navigator.clipboard){
-	  copyBtn.addEventListener('click', async ()=>{
-		try{
-		  await navigator.clipboard.writeText(`${lat}, ${lng}`);
-		  copyBtn.textContent = 'คัดลอกแล้ว ✓';
-		  setTimeout(()=> copyBtn.textContent = 'คัดลอกพิกัด', 1500);
-		}catch(_){}
-	  });
-	}
-  })();
 
-  // บังคับเปิดฟอร์ม RSVP นอกแอป (FB/IG) + fallback ถ้า window.open ถูกบล็อก
+	if (openBtn) {
+		openBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			const isApple = /iPad|iPhone|Macintosh/.test(navigator.userAgent);
+			const url = isApple
+				? `https://maps.apple.com/?ll=${lat},${lng}&q=${encodeURIComponent('ไร่ภาพตะวัน')}`
+				: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+			window.open(url, '_blank', 'noopener');
+		});
+	}
+	if (copyBtn && navigator.clipboard) {
+		copyBtn.addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(`${lat}, ${lng}`);
+				copyBtn.textContent = 'คัดลอกแล้ว ✓';
+				setTimeout(() => copyBtn.textContent = 'คัดลอกพิกัด', 1500);
+			} catch (_) { }
+		});
+	}
+})();
+
+// บังคับเปิดฟอร์ม RSVP นอกแอป (FB/IG) + fallback ถ้า window.open ถูกบล็อก
 // บังคับเปิด RSVP นอกแอป + กัน handler อื่น ๆ มาทับ
-(function(){
-  const a = document.getElementById('rsvp-external');
-  if(!a) return;
-  a.addEventListener('click', function(e){
-    e.preventDefault();            // กัน default/scroll handler
-    e.stopPropagation();           // กัน bubbling ไปชนโค้ดอื่น
-    const url = this.href;
-    let ok = false;
-    try { const w = window.open(url, '_blank', 'noopener'); ok = !!w; } catch(_){}
-    if(!ok) location.href = url;   // fallback ถ้าโดนบล็อก
-  }, false);
+(function () {
+	const a = document.getElementById('rsvp-external');
+	if (!a) return;
+	a.addEventListener('click', function (e) {
+		e.preventDefault();            // กัน default/scroll handler
+		e.stopPropagation();           // กัน bubbling ไปชนโค้ดอื่น
+		const url = this.href;
+		let ok = false;
+		try { const w = window.open(url, '_blank', 'noopener'); ok = !!w; } catch (_) { }
+		if (!ok) location.href = url;   // fallback ถ้าโดนบล็อก
+	}, false);
 })();
 
 
-(function(){
-  const iframe   = document.getElementById('rsvp-form');
-  const loader   = document.getElementById('iframe-loader');
-  const fallback = document.getElementById('rsvp-fallback');
-  const inApp = /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(navigator.userAgent || '');
-  let loaded = false;
+(function () {
+	const iframe = document.getElementById('rsvp-form');
+	const loader = document.getElementById('iframe-loader');
+	const fallback = document.getElementById('rsvp-fallback');
+	const inApp = /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(navigator.userAgent || '');
+	let loaded = false;
 
-  if (iframe) iframe.addEventListener('load', () => {
-    loaded = true;
-    if (loader)   loader.style.display   = 'none';
-    if (fallback) fallback.style.display = 'none';
-  });
+	if (iframe) iframe.addEventListener('load', () => {
+		loaded = true;
+		if (loader) loader.style.display = 'none';
+		// ใน in-app: คงปุ่มไว้ตลอด ไม่ซ่อน
+		if (!inApp && fallback) fallback.style.display = 'none';
+	});
 
-  if (inApp && fallback) fallback.style.display = 'block';   // ในแอป โชว์เลย
 
-  setTimeout(() => {                                        // โหลดช้า → โชว์ปุ่ม
-    if (!loaded && fallback) fallback.style.display = 'block';
-    if (!loaded && loader)  loader.style.display   = 'none';
-  }, 7000);
+	if (inApp && fallback) fallback.style.display = 'block';   // ในแอป โชว์เลย
+
+	setTimeout(() => {                                        // โหลดช้า → โชว์ปุ่ม
+		if (!loaded && fallback) fallback.style.display = 'block';
+		if (!loaded && loader) loader.style.display = 'none';
+	}, 7000);
 })();
 
 
