@@ -1484,11 +1484,11 @@
            .mobile-cta {
                display: none;
            }
-           .rsvp-fallback{
+           /* .rsvp-fallback{
 
                 display: none;
 
-           }
+           } */
        }
 
        @media(max-width:932px) {
@@ -1523,9 +1523,9 @@
                display: none;
            }
 
-           .rsvp-fallback{
+           /* .rsvp-fallback{
             display: block; 
-           }
+           } */
 
            .navbar {
                padding: 15px 20px;

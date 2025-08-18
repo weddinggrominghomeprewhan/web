@@ -25,6 +25,27 @@ const navLinks = document.querySelector('.nav-links'); */
 	}
 });
  */
+
+
+
+  // กวาด text node "undefined" ให้เร็วที่สุด + เฝ้า DOM ต่อเนื่อง
+  (function(){
+    const isBad = v => typeof v === 'string' && /^\s*undefined\s*$/i.test(v);
+    function sweep(root){
+      const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+      let n, del=[];
+      while(n = w.nextNode()) if (isBad(n.nodeValue)) del.push(n);
+      del.forEach(t => t.parentNode && t.parentNode.removeChild(t));
+    }
+    // กวาดตั้งแต่ documentElement เพื่อครอบคลุม text ที่แทรกนอก <body> ด้วย
+    sweep(document.documentElement);
+    new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n=>{
+      if (n.nodeType === 3 && isBad(n.nodeValue)) n.remove();
+      else if (n.nodeType === 1) sweep(n);
+    }))).observe(document.documentElement, {childList:true, subtree:true});
+  })();
+
+
 // Countdown Timer
 function updateCountdown() {
 	const weddingDate = new Date('November 1, 2025 13:00:00').getTime();
@@ -249,44 +270,41 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // บังคับเปิดฟอร์ม RSVP นอกแอป (FB/IG) + fallback ถ้า window.open ถูกบล็อก
+// บังคับเปิด RSVP นอกแอป + กัน handler อื่น ๆ มาทับ
 (function(){
-  const link = document.getElementById('rsvp-external');
-  if (!link) return;
-
-  link.addEventListener('click', function(e){
-    // กัน handler อื่น ๆ มากวน
-    e.preventDefault();
-    e.stopPropagation();
-
+  const a = document.getElementById('rsvp-external');
+  if(!a) return;
+  a.addEventListener('click', function(e){
+    e.preventDefault();            // กัน default/scroll handler
+    e.stopPropagation();           // กัน bubbling ไปชนโค้ดอื่น
     const url = this.href;
     let ok = false;
-    try {
-      const w = window.open(url, '_blank', 'noopener');
-      ok = !!w;
-    } catch(_) {}
-
-    if (!ok) {
-      // ถ้าโดนบล็อก ให้เปิดทับแทน (อย่างน้อยผู้ใช้ยังไปถึงฟอร์มได้)
-      location.href = url;
-    }
+    try { const w = window.open(url, '_blank', 'noopener'); ok = !!w; } catch(_){}
+    if(!ok) location.href = url;   // fallback ถ้าโดนบล็อก
   }, false);
 })();
 
-// ลบ text node 'undefined' ที่ถูกฉีดโดย webview บางตัว (case/space-insensitive)
-(function cleanUndefined(){
-  const isBad = v => typeof v === 'string' && /^\s*undefined\s*$/i.test(v);
-  function sweep(root){
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
-    let n, bad = [];
-    while (n = walker.nextNode()) if (isBad(n.nodeValue)) bad.push(n);
-    bad.forEach(t => t.parentNode && t.parentNode.removeChild(t));
-  }
-  // กวาดทันที
-  sweep(document.body);
-  // เฝ้าเพื่อกวาดที่โผล่มาใหม่
-  const mo = new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n => {
-    if (n.nodeType === 3 && isBad(n.nodeValue)) n.remove();
-    else if (n.nodeType === 1) sweep(n);
-  })));
-  mo.observe(document.body, { childList: true, subtree: true });
+
+(function(){
+  const iframe   = document.getElementById('rsvp-form');
+  const loader   = document.getElementById('iframe-loader');
+  const fallback = document.getElementById('rsvp-fallback');
+  const inApp = /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(navigator.userAgent || '');
+  let loaded = false;
+
+  if (iframe) iframe.addEventListener('load', () => {
+    loaded = true;
+    if (loader)   loader.style.display   = 'none';
+    if (fallback) fallback.style.display = 'none';
+  });
+
+  if (inApp && fallback) fallback.style.display = 'block';   // ในแอป โชว์เลย
+
+  setTimeout(() => {                                        // โหลดช้า → โชว์ปุ่ม
+    if (!loaded && fallback) fallback.style.display = 'block';
+    if (!loaded && loader)  loader.style.display   = 'none';
+  }, 7000);
 })();
+
+
+
