@@ -248,47 +248,45 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
   })();
 
+  // บังคับเปิดฟอร์ม RSVP นอกแอป (FB/IG) + fallback ถ้า window.open ถูกบล็อก
 (function(){
-  const iframe   = document.getElementById('rsvp-form');
-  const loader   = document.getElementById('iframe-loader');
-  const fallback = document.getElementById('rsvp-fallback');
-  const inApp = /\bFBAN|FBAV|FB_IAB|Instagram\b/i.test(navigator.userAgent || '');
+  const link = document.getElementById('rsvp-external');
+  if (!link) return;
 
-  let loaded = false;
+  link.addEventListener('click', function(e){
+    // กัน handler อื่น ๆ มากวน
+    e.preventDefault();
+    e.stopPropagation();
 
-  if (iframe) {
-    iframe.addEventListener('load', () => {
-      loaded = true;
-      if (loader)   loader.style.display   = 'none';
-      if (fallback) fallback.style.display = 'none';  // ซ่อน fallback เมื่อโหลดได้
-    });
-  }
+    const url = this.href;
+    let ok = false;
+    try {
+      const w = window.open(url, '_blank', 'noopener');
+      ok = !!w;
+    } catch(_) {}
 
-  // ถ้าเปิดใน FB/IG → โชว์ปุ่มสำรองไว้เลย
-  if (inApp && fallback) fallback.style.display = 'block';
-
-  // เผื่อกรณี onload ไม่มาใน in-app → รอ 7 วินาทีแล้วแสดง fallback
-  setTimeout(() => {
-    if (!loaded && fallback) fallback.style.display = 'block';
-    if (!loaded && loader)  loader.style.display   = 'none';
-  }, 7000);
+    if (!ok) {
+      // ถ้าโดนบล็อก ให้เปิดทับแทน (อย่างน้อยผู้ใช้ยังไปถึงฟอร์มได้)
+      location.href = url;
+    }
+  }, false);
 })();
 
-// กวาด text node คำว่า 'undefined' ที่โผล่มาแบบไม่ตั้งใจ
+// ลบ text node 'undefined' ที่ถูกฉีดโดย webview บางตัว (case/space-insensitive)
 (function cleanUndefined(){
+  const isBad = v => typeof v === 'string' && /^\s*undefined\s*$/i.test(v);
   function sweep(root){
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
-    let n, bad=[];
-    while(n = walker.nextNode()){
-      if (n.nodeValue && n.nodeValue.trim() === 'undefined') bad.push(n);
-    }
+    let n, bad = [];
+    while (n = walker.nextNode()) if (isBad(n.nodeValue)) bad.push(n);
     bad.forEach(t => t.parentNode && t.parentNode.removeChild(t));
   }
+  // กวาดทันที
   sweep(document.body);
-  // เฝ้าต่อเพื่อกันโผล่มาใหม่
+  // เฝ้าเพื่อกวาดที่โผล่มาใหม่
   const mo = new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n => {
-    if (n.nodeType === 3 && n.nodeValue.trim() === 'undefined') n.remove();
+    if (n.nodeType === 3 && isBad(n.nodeValue)) n.remove();
     else if (n.nodeType === 1) sweep(n);
   })));
-  mo.observe(document.body, {childList:true, subtree:true});
+  mo.observe(document.body, { childList: true, subtree: true });
 })();
