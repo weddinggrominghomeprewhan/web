@@ -27,8 +27,9 @@
         <a href="${full}" data-lightbox="wedding" data-title="${escapeAttr(cap)}">
           <img src="${thumb}" alt="${escapeAttr(cap)}" loading="lazy">
         </a>
-        <figcaption>${cap}</figcaption>
+        
       `;
+      {/* <figcaption>${cap}</figcaption> */}
       frag.appendChild(fig);
     }
     $gallery.appendChild(frag);
