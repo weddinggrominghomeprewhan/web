@@ -109,13 +109,52 @@
         max-width: 1400px
       }
     }
+
+    #btnTop {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: #c7a58a;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s, transform .4s;
+      z-index: 50;
+    }
+
+    #btnTop:hover {
+      background: #a88364;
+      transform: scale(1.08);
+    }
+
+    #btnTop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (max-width:640px) {
+      #btnTop {
+        width: 44px;
+        height: 44px;
+        bottom: 18px;
+        right: 18px;
+        font-size: 20px;
+      }
+    }
   </style>
 </head>
 
 <body>
   <header class="container">
     <h1>Whan & Pre — Wedding Gallery</h1>
-  </br>
+    </br>
     <p><a class="btn btn-outline-secondary btn-sm btn-back" href="index.html">← กลับหน้าแรก</a></p>
   </header>
 
@@ -129,6 +168,19 @@
 
   <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox-plus-jquery.min.js"></script>
   <script src="assets/gallery.js"></script>
+  <button id="btnTop" title="กลับขึ้นบน">↑</button>
+
+  <script>
+    const btnTop = document.getElementById('btnTop');
+    window.addEventListener('scroll', () => {
+      // โชว์ปุ่มเมื่อเลื่อนลงเกิน 400px
+      if (document.documentElement.scrollTop > 400) btnTop.classList.add('show');
+      else btnTop.classList.remove('show');
+    });
+    btnTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 
 </html>
