@@ -1,66 +1,124 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wedding Gallery | Whan & Pre</title>
-  <meta name="description" content="แกลเลอรี่งานแต่ง Whan & Pre — Masonry แบบเดิม เลื่อนลงแนวตั้ง โหลดเพิ่มโดยไม่สั่น" />
+  <meta name="description" content="Whan & Pre — Wedding Gallery" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Itim&family=Julius+Sans+One&family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Itim&family=Julius+Sans+One&family=Kanit:wght@300;400;600&display=swap"
+    rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/css/lightbox.min.css" rel="stylesheet">
   <style>
-    :root{--bg:#f9f3f3;--fg:#3a2e2e;--muted:#7d5a5a;--gap:16px;--col:4}
-    *{box-sizing:border-box}
-    body{
-      font-family:'Julius Sans One','Kanit',system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans Thai',sans-serif;
-      color:var(--fg); background:var(--bg); margin:0;
-    }
-    header{padding:28px 0 8px;text-align:center}
-    header h1{font-size:2.1rem;margin:0 0 6px}
-    header p{margin:0;color:var(--muted)}
-    .btn-back{display:inline-block;margin:10px auto 0;text-align:center}
-
-    /* === Masonry แบบคำนวณตำแหน่งเอง === */
-    .wrap{max-width:1400px;margin:18px auto 40px;padding:0 12px}
-    #gallery{
-      position:relative;  /* ให้ลูก absolute วางทับในพื้นที่นี้ */
-      min-height:200px;
-    }
-    .tile{
-      position:absolute;  /* วางด้วย left/top จาก JS */
-      border-radius:14px;
-      overflow:hidden;
-      background:#eee;
-      box-shadow:0 1px 2px rgba(0,0,0,.04);
-      will-change:transform;
-      transition:transform .06s ease; /* ลื่นนิด ๆ ตอน reflow หลัง resize */
-    }
-    .tile a{display:block}
-    .tile img{
-      width:100%; height:100%;
-      object-fit:cover; display:block;
-    }
-    .tile figcaption{
-      font-size:13px;color:var(--muted);padding:6px 8px;background:#fff
+    :root {
+      --bg: #f9f3f3;
+      --fg: #3a2e2e;
+      --muted: #7d5a5a;
+      --gap: 12px
     }
 
-    .loader{display:none;justify-content:center;align-items:center;margin:18px 0}
-    .loader.show{display:flex}
+    * {
+      box-sizing: border-box
+    }
 
-    /* คอลัมน์ตามความกว้างหน้าจอ (ควบคุมด้วย JS ก็ได้ แต่มี fallback ด้วย CSS var) */
-    @media (max-width:1280px){ :root{--col:3} }
-    @media (max-width:900px) { :root{--col:2} }
-    @media (max-width:560px) { :root{--col:1} }
+    body {
+      font-family: 'Julius Sans One', 'Kanit', system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans Thai', sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+      margin: 0;
+    }
+
+    /* แก้เป็น */
+    header {
+      padding: 20px 0 8px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+      background: var(--bg);
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      margin: 0 0 4px
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .9rem
+    }
+
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 10px
+    }
+
+    #gallery {
+      position: relative;
+      min-height: 200px
+    }
+
+    .tile {
+      position: absolute;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #eee;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    }
+
+    .tile a {
+      display: block
+    }
+
+    .tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block
+    }
+
+    /* full-width ภาพเต็มแถว → แสดงเต็มภาพไม่ครอป */
+    .tile.full img {
+      object-fit: contain;
+      background: #eee;
+    }
+
+    .loader {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      margin: 16px 0
+    }
+
+    .loader.show {
+      display: flex
+    }
+
+    @media (min-width:900px) {
+      .wrap {
+        max-width: 1200px
+      }
+    }
+
+    @media (min-width:1280px) {
+      .wrap {
+        max-width: 1400px
+      }
+    }
   </style>
 </head>
+
 <body>
   <header class="container">
     <h1>Whan & Pre — Wedding Gallery</h1>
-    
+  </br>
     <p><a class="btn btn-outline-secondary btn-sm btn-back" href="index.html">← กลับหน้าแรก</a></p>
   </header>
+
 
   <div class="wrap">
     <main id="gallery" aria-live="polite"></main>
@@ -72,4 +130,5 @@
   <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox-plus-jquery.min.js"></script>
   <script src="assets/gallery.js"></script>
 </body>
+
 </html>
