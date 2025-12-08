@@ -215,6 +215,9 @@
   <header class="container">
     <h1>Whan & Pre — Wedding Gallery</h1>
     </br>
+    <h1 style="margin-bottom: 15px; font-size: 10px;">
+      Total Photos: <span id="total-photos">...</span>
+  </h1>
     <p><a class="btn btn-outline-secondary btn-sm btn-back" href="index.html">← กลับหน้าแรก</a></p>
   </header>
 
@@ -330,6 +333,17 @@ document.getElementById('gallery').addEventListener('click', async (e) => {
         delete btn.dataset.processing;
       }
     });
+    // --- เพิ่มส่วนนี้: ดึงจำนวนรูปมาแสดง ---
+    fetch('manifests/meta.json')
+      .then(response => response.json())
+      .then(data => {
+        // แสดงตัวเลขแบบมีลูกน้ำ (เช่น 1,200)
+        document.getElementById('total-photos').innerText = data.total.toLocaleString();
+      })
+      .catch(err => {
+        console.error("Error loading meta.json", err);
+        document.getElementById('total-photos').innerText = ""; 
+      });
 
   </script>
   
