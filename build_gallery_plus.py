@@ -1,125 +1,115 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import argparse, os, sys, json, math, pathlib, hashlib, csv
+# Re-generate gallery manifests from EXISTING images in gallery/full and gallery/thumbs
+# Usage: python build_gallery.py --dst .
+
+import argparse, os, json, pathlib, math
 from PIL import Image, ExifTags
-try:
-    import pillow_heif
-    pillow_heif.register_heif_opener()
-except Exception:
-    pass
 
-def exif_dict(img):
+def natural_sort_key(s):
+    import re
+    return [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]
+
+def get_caption_date(img_path):
+    # พยายามอ่าน Caption จาก EXIF หรือใช้วันที่แก้ไขไฟล์
     try:
-        raw = img.getexif() or {}
-        return {ExifTags.TAGS.get(k,k): v for k,v in raw.items()}
+        with Image.open(img_path) as im:
+            raw = im.getexif() or {}
+            # ลองหาคำอธิบายภาพ
+            desc = raw.get(0x010e) or raw.get(0x9c9b) # ImageDescription or XPTitle
+            # ลองหาวันที่ถ่าย
+            dt = raw.get(0x9003) or raw.get(0x0132) # DateTimeOriginal or DateTime
+            
+            caption = img_path.stem # ใช้ชื่อไฟล์เป็นค่าเริ่มต้น
+            
+            if desc and isinstance(desc, str):
+                caption = desc.strip()
+            elif dt and isinstance(dt, str) and len(dt) >= 10:
+                # ถ้าไม่มีคำอธิบาย ใช้ชื่อไฟล์ + วันที่
+                date_str = dt[:10].replace(':', '-')
+                caption = f"{img_path.stem} · {date_str}"
+            
+            return caption
     except Exception:
-        return {}
-
-def resize_save(src, dst, max_px, fmt='webp', quality=82):
-    os.makedirs(os.path.dirname(dst), exist_ok=True)
-    with Image.open(src) as im:
-        im = im.convert('RGB')
-        w, h = im.size
-        scale = max_px / max(w, h)
-        if scale < 1.0:
-            im = im.resize((int(w*scale), int(h*scale)), Image.LANCZOS)
-        params = {}
-        fmt = fmt.lower()
-        if fmt in ('jpg','jpeg'):
-            params.update(dict(quality=quality, optimize=True, progressive=True))
-            dst = os.path.splitext(dst)[0] + '.jpg'
-        elif fmt == 'webp':
-            params.update(dict(quality=quality, method=6))
-            dst = os.path.splitext(dst)[0] + '.webp'
-        else:
-            dst = os.path.splitext(dst)[0] + '.png'
-        im.save(dst, **params)
-    return dst
-
-def load_overrides(csv_path):
-    if not csv_path or not os.path.exists(csv_path): return {}
-    mapr = {}
-    with open(csv_path, 'r', encoding='utf-8') as fh:
-        r = csv.DictReader(fh)
-        for row in r:
-            fp = row.get('filepath')
-            if not fp: continue
-            cap = (row.get('caption') or row.get('caption_suggested') or '').strip()
-            tags = (row.get('tags') or row.get('tags_suggested') or '').split()
-            mapr[os.path.normpath(fp)] = {'caption': cap, 'tags': [t for t in tags if t]}
-    return mapr
+        return img_path.stem
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--src', required=True)
-    ap.add_argument('--dst', default='.')
-    ap.add_argument('--page-size', type=int, default=100)
-    ap.add_argument('--max-thumb', type=int, default=900)
-    ap.add_argument('--max-full', type=int, default=2000)
-    ap.add_argument('--format', default='webp', choices=['webp','jpg','png'])
-    ap.add_argument('--quality', type=int, default=82)
-    ap.add_argument('--tags-csv', default=None)
-    ap.add_argument('--tag-from-folder', default='yes', choices=['yes','no'])
+    ap.add_argument('--dst', default='.', help='โฟลเดอร์โปรเจกต์ (ที่มีโฟลเดอร์ gallery อยู่ข้างใน)')
+    ap.add_argument('--page-size', type=int, default=100, help='จำนวนรูปต่อ 1 หน้า')
     args = ap.parse_args()
 
-    src = pathlib.Path(args.src)
     dst = pathlib.Path(args.dst)
-    thumbs_dir = dst / 'gallery' / 'thumbs'
     full_dir = dst / 'gallery' / 'full'
+    thumbs_dir = dst / 'gallery' / 'thumbs'
     manifests_dir = dst / 'manifests'
-    for d in (thumbs_dir, full_dir, manifests_dir):
-        d.mkdir(parents=True, exist_ok=True)
 
-    overrides = load_overrides(args.tags_csv)
+    # ตรวจสอบว่ามีโฟลเดอร์รูปอยู่จริงไหม
+    if not full_dir.exists():
+        print(f"Error: ไม่พบโฟลเดอร์ {full_dir}")
+        return
 
-    exts = {'.jpg','.jpeg','.png','.webp','.heic','.heif','.tif','.tiff'}
-    files = [p for p in src.rglob('*') if p.suffix.lower() in exts]
-    files.sort(key=lambda p: str(p).lower())
+    manifests_dir.mkdir(parents=True, exist_ok=True)
+
+    # 1. สแกนไฟล์รูปทั้งหมดใน full
+    exts = {'.jpg', '.jpeg', '.png', '.webp', '.avif'}
+    files = [p for p in full_dir.glob('*') if p.suffix.lower() in exts]
+    
+    # เรียงลำดับชื่อไฟล์แบบธรรมชาติ (1, 2, 10 แทนที่จะเป็น 1, 10, 2)
+    files.sort(key=lambda p: natural_sort_key(p.name))
+
+    print(f"Found {len(files)} images in {full_dir}...")
 
     items = []
     for f in files:
-        caption = f.stem
+        # หาคู่ไฟล์ thumb (ชื่อเดียวกัน)
+        thumb_path = thumbs_dir / f.name
+        
+        # ถ้าไม่มี thumb ให้ใช้ full แทน (กรณีฉุกเฉิน)
+        if not thumb_path.exists():
+            thumb_path = f
+        
+        # สร้าง Path สำหรับ Web (relative path และเปลี่ยน \ เป็น /)
+        web_full = str(f.relative_to(dst)).replace('\\', '/')
+        web_thumb = str(thumb_path.relative_to(dst)).replace('\\', '/')
+        
+        # อ่าน Caption (ถ้าต้องการความเร็ว ปิดบรรทัดนี้แล้วใช้ f.stem แทนได้เลย)
+        caption = get_caption_date(f) 
+        
+        # เดา Tags จากชื่อไฟล์ (ถ้าชื่อไฟล์เป็น 1.ceremony (1).webp)
         tags = []
-        if args.tag_from_folder == 'yes':
-            parts = f.relative_to(src).parts[:-1]
-            tags.extend([p for p in parts])
+        if '.' in f.stem:
+            possible_tag = f.stem.split('.')[0] # เอาคำหน้าจุดมาเป็น Tag
+            if possible_tag.isdigit() == False: # ถ้าไม่ใช่ตัวเลขล้วน
+                tags.append(possible_tag)
 
-        try:
-            with Image.open(f) as im:
-                ex = exif_dict(im)
-                desc = ex.get('ImageDescription') or ex.get('XPTitle')
-                if isinstance(desc, bytes):
-                    try:
-                        desc = desc.decode('utf-16') if desc.startswith(b'\\xff\\xfe') else desc.decode('utf-8','ignore')
-                    except Exception: pass
-                if isinstance(desc,str) and desc.strip():
-                    caption = desc.strip()
-        except Exception:
-            pass
+        items.append({
+            "thumb": web_thumb,
+            "full":  web_full,
+            "caption": caption,
+            "tags": tags
+        })
 
-        ov = overrides.get(os.path.normpath(str(f)))
-        if ov:
-            if ov.get('caption'): caption = ov['caption']
-            if 'tags' in ov and ov['tags']: tags = ov['tags']
+    # 2. แบ่งหน้า (Pagination) และบันทึก JSON
+    n = len(items)
+    page_size = max(1, args.page_size)
+    pages = math.ceil(n / page_size)
 
-        stem = hashlib.sha1(str(f).encode('utf-8')).hexdigest()[:12]
-        thumb_out = thumbs_dir / stem
-        full_out  = full_dir / stem
-        thumb_rel = pathlib.Path(resize_save(f, thumb_out, args.max_thumb, args.format, args.quality)).relative_to(dst)
-        full_rel  = pathlib.Path(resize_save(f, full_out,  args.max_full, args.format, args.quality)).relative_to(dst)
-        items.append({"thumb": str(thumb_rel).replace('\\','/'),
-                      "full":  str(full_rel).replace('\\','/'),
-                      "caption": caption,
-                      "tags": tags})
+    # ลบไฟล์ json เก่าก่อน เพื่อกันความสับสน
+    for old_json in manifests_dir.glob("page_*.json"):
+        old_json.unlink()
 
-    n = len(items); ps = max(1, args.page_size)
-    pages = (n + ps - 1) // ps
     for p in range(pages):
-        chunk = items[p*ps:(p+1)*ps]
-        out = manifests_dir / f"page_{p:03d}.json"
-        with open(out, 'w', encoding='utf-8') as fh:
-            json.dump(chunk, fh, ensure_ascii=False, separators=(',',':'))
-    print(f"[ok] built {n} items → {pages} pages at {manifests_dir}")
+        chunk = items[p*page_size : (p+1)*page_size]
+        out_name = manifests_dir / f"page_{p:03d}.json"
+        
+        with open(out_name, 'w', encoding='utf-8') as fh:
+            json.dump(chunk, fh, ensure_ascii=False, separators=(',', ':'))
+        
+        print(f"Saved {out_name} ({len(chunk)} items)")
+
+    print(f"\n✅ เสร็จสิ้น! รวมรูปทั้งหมด {n} รูป แบ่งเป็น {pages} หน้า")
+    print(f"   เปิดไฟล์ gallery.html เพื่อดูผลลัพธ์ได้เลย")
 
 if __name__ == '__main__':
     main()

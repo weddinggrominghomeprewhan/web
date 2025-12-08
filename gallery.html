@@ -242,7 +242,7 @@
     });
 
     // ปุ่มดาวน์โหลดรูป
-document.getElementById('gallery').addEventListener('click', (e) => {
+/* document.getElementById('gallery').addEventListener('click', (e) => {
   const btn = e.target.closest('.dl-btn');
   if (!btn) return;
   const url = btn.getAttribute('data-url');
@@ -254,7 +254,82 @@ document.getElementById('gallery').addEventListener('click', (e) => {
   document.body.appendChild(a);
   a.click();
   a.remove();
-});
+}); */
+// --- ส่วนจัดการดาวน์โหลดและแปลงเป็น PNG (แก้ไขใหม่) ---
+document.getElementById('gallery').addEventListener('click', async (e) => {
+      const btn = e.target.closest('.dl-btn');
+      if (!btn) return;
+      
+      const url = btn.getAttribute('data-url');
+      if (!url) return;
+
+      // ป้องกันการกดซ้ำระหว่างประมวลผล
+      if (btn.dataset.processing) return;
+
+      try {
+        // 1. แจ้งสถานะว่ากำลังทำงาน (เปลี่ยนไอคอนชั่วคราว)
+        btn.dataset.processing = "true";
+        const originalText = btn.innerText;
+        btn.innerText = "⏳"; // แสดงรูปนาฬิกาทราย หรือ ...
+
+        // 2. โหลดรูปภาพเข้ามาใน Memory
+        const img = new Image();
+        // สำคัญ: ต้องใส่ crossOrigin เพื่อให้ Canvas ยอมให้ save รูปข้ามโดเมนได้ (ถ้าโฮสต์รองรับ)
+        img.crossOrigin = "anonymous"; 
+        img.src = url;
+
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+
+        // 3. สร้าง Canvas และวาดรูปลงไป
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        // 4. ตั้งชื่อไฟล์ใหม่ (เอาชื่อเดิมมาเปลี่ยนนามสกุลเป็น .png)
+        let filename = url.split('/').pop().split('?')[0]; // ตัด query string ออก
+        const namePart = filename.substring(0, filename.lastIndexOf('.')) || filename;
+        const newFilename = `${namePart}.png`;
+
+        // 5. แปลงเป็น Blob (PNG) และสั่งดาวน์โหลด
+        canvas.toBlob((blob) => {
+          if (!blob) throw new Error('Conversion failed');
+          
+          const a = document.createElement('a');
+          const objectUrl = URL.createObjectURL(blob);
+          a.href = objectUrl;
+          a.download = newFilename; // บังคับชื่อไฟล์ .png
+          document.body.appendChild(a);
+          a.click();
+          
+          // Cleanup
+          document.body.removeChild(a);
+          URL.revokeObjectURL(objectUrl);
+          
+          // คืนค่าปุ่ม
+          btn.innerText = originalText;
+          delete btn.dataset.processing;
+        }, 'image/png'); // ระบุ format ที่ต้องการตรงนี้
+
+      } catch (err) {
+        console.error("PNG conversion failed, falling back to direct download", err);
+        // กรณีแปลงไม่สำเร็จ (เช่น ติด CORS) ให้ดาวน์โหลดแบบปกติแทน
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // คืนค่าปุ่ม
+        btn.innerText = e.target.closest('.dl-btn').innerText; // คืนค่าเดิม
+        delete btn.dataset.processing;
+      }
+    });
 
   </script>
   
